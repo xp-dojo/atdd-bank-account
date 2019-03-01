@@ -26,3 +26,27 @@ This session is all about working with your customers (in this case the product 
 
 > Iterative vs incremental development: do you know the difference? Ask an instructor if you're not sure.
 
+
+## Structure
+
+1. You should start by asking the product owner what she wants you to do. Read the [transcript](TRANSCRIPT.md) of the interview you conducted last week to remind yourselves of the details, and if there are enough instructors, they will be posing as product owners to field any clarifying questions you may have in person.
+
+1. Write one or more acceptance tests. Capture what you think the product owner's acceptance criteria are, in *business language*. Tools like Concordion and Cucumber allow you to write these "specifications" in (more or less) English. Whatever format you choose, you shouldn't be writing code at this stage but *specifications*.
+
+1. Write "fixture" or "steps" code to bridge your human readable specification to the code that implements the business logic. 
+
+1. Make your specifications *executable*. This is where you wire the test fixture code from step 3. to the specifications in step 2. Ask an instructor about syntax if you get hung up.
+
+1. Most of this business logic code, or API is already implemented for you but you may need to write more. 
+
+> What do you think we mean by "test fixture"? Ask an instructor to elaborate as it's an often misunderstood phrase.
+
+
+## Hints
+
+The steps above are __iterative__. Try something small and get feedback. Can you think of a way to get feedback and refine using the mechanisms above?
+
+
+# Additional Reading
+
+[Problems with Acceptance Testing](http://www.softwaretestingmagazine.com/knowledge/problems-acceptance-testing-can-cause/)
