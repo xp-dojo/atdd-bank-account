@@ -24,7 +24,7 @@ You will need Java and an IDE.
 
 This session is all about working with your customers (in this case the product owner) to understand their requirements and writing acceptance tests that you can show them to make sure you've understood them correctly and they're happy with what you're building. Just like the TDD session, you should write your acceptance tests *before* the implementation and think about small, iterative development cycles.
 
-> Iterative vs incremental development: do you know the difference? Ask an instructor if you're not sure.
+> **Iterative vs incremental development**: do you know the difference? Ask an instructor if you're not sure.
 
 
 ## Structure
@@ -39,7 +39,9 @@ This session is all about working with your customers (in this case the product 
 
 1. Most of this business logic code, or API is already implemented for you but you may need to write more. 
 
-> What do you think we mean by "test fixture"? Ask an instructor to elaborate as it's an often misunderstood phrase.
+> **What do you think is meant by "test fixture"?**
+> 
+> In science, a fixture is often physical apparatus used to support a test specimen during an experiment. The experiment or test is distinct from the apparatus that supports it. Unit testing frameworks often muddy this idea because they expect tests to include test support code (the fixture part) as well as the actual test scenarios (the experiment part).
 
 
 ## Hints
