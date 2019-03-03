@@ -3,6 +3,8 @@ package org.xpdojo.bank;
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
 
+import java.security.SecureRandom;
+
 @RunWith(ConcordionRunner.class)
 public class ViewBalanceSlipFixture {
 
@@ -27,6 +29,16 @@ public class ViewBalanceSlipFixture {
 
 		public BalanceSlip(long balance) {
 			this.balance = balance;
+		}
+		
+		public String dateAndTime() {
+			if (randomChoice())
+				return "current date and time";
+			return "12 Feb 2019";
+		}
+
+		private boolean randomChoice() {
+			return new SecureRandom().nextBoolean();
 		}
 	}
 }
