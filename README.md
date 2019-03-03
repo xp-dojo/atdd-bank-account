@@ -51,7 +51,7 @@ The [Concordion](https://concordion.org/tutorial/java/html/) tool describes the 
 
 ![](how-it-works-html.png)
 
-You will _bridge_ your specifications (in this case written in HTML but they may be so called "feature" files) to executable code through _instrumentation_. The specifics vary between tools, but the basic concept is the same. The skill is in keep the specification abstract and all the implementation detail in the fixture, test and production code.
+You will _bridge_ your specifications (in this case written in HTML but they may be so called "feature" files) to executable code through _instrumentation_. The specifics vary between tools, but the basic concept is the same. The skill is in keeping the specification abstract and all the implementation detail in the fixture, test and production code.
 
 
 ## Hints
