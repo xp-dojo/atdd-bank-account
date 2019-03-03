@@ -43,6 +43,16 @@ This session is all about working with your customers (in this case the product 
 > 
 > In science, a fixture is often physical apparatus used to support a test specimen during an experiment. The experiment or test is distinct from the apparatus that supports it. Unit testing frameworks often muddy this idea because they expect tests to include test support code (the fixture part) as well as the actual test scenarios (the experiment part).
 
+## Specifications and Fixtures
+
+The majority of tooling helps abstract the customer authored acceptance criteria or _specifications_ from the test fixture code that proves them. By keeping these two ideas separate, your test code will continue to work as the underlying system grows. Without the seperation of concerns, your specifications become brittle and require more maintenance as you refine your understanding.
+
+The [Concordion](https://concordion.org/tutorial/java/html/) tool describes the idea graphically like this.
+
+![](how-it-works-html.png)
+
+You will _bridge_ your specifications (in this case written in HTML but they may be so called "feature" files) to executable code through _instrumentation_. The specifics vary between tools, but the basic concept is the same. The skill is in keep the specification abstract and all the implementation detail in the fixture, test and production code.
+
 
 ## Hints
 
