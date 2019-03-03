@@ -20,7 +20,6 @@ p, td, th, li, .breadcrumbs {
 }
 p, li {
   line-height: 140%;
-  max-width: 720px;
 }
 table {
   border-collapse: collapse;
@@ -78,4 +77,17 @@ li {
 }
 .commentary, .commentary * {
   font-size: 8pt;
+}
+
+.information {
+    padding: 2px 12px 6px 12px;
+    border: 1px solid #EEEEB0;
+    margin: 6px 0px 28px 0px;
+    background-color: #FFFFD0;
+}
+
+.information h3 {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    font-size: 12pt;
 }
