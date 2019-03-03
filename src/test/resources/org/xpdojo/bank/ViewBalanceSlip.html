@@ -1,5 +1,8 @@
-<html>
+<!DOCTYPE html>
+<html xmlns:concordion="http://www.concordion.org/2007/concordion">
 <head>
+    <title>Viewing a Balance Slip</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link href="../../../concordion.css" rel="stylesheet" type="text/css"/>
 </head>
 
@@ -11,13 +14,16 @@
 
 <p>The system should therefore be able to respond with a customer's current balance at the point in time they request it.</p>
 
-<h3>Example</h3>
 <div class="example">
-    <p>A customer Dale has an account with a balance of <code>1045.00 EUR</code>.</p>
+    <h3>Example</h3>
+    <div>
+        <p>A customer Dale has an account with a balance of <code concordion:set="#balance">1045</code> EUR.</p><span concordion:execute="setCurrentBalance(#balance)"></span>
 
-    <p>Dale checks his balance.</p>
+        <p>Dale <span concordion:execute="#result = checkCurrentBalance()">checks his balance</span>.</p>
 
-    <p>The system reports back the correct balance (along with the current date and time).</p>
+        <p>The system reports back the correct balance of <span concordion:assert-equals="#result.balance">1031</span> (along with the <span>current date and time</span>).
+        </p>
+    </div>
 </div>
 
 <div class="information">
