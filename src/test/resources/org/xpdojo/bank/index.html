@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:concordion="http://www.concordion.org/2007/concordion">
 <head>
     <title>Portfolio Valuation Overview</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -18,10 +18,10 @@
     <h2>Acceptance Tests</h2>
     <ul>
         <li>
-            <p><a href="ViewBalanceSlip.html">Example 1: Viewing a balance slip</a> <span style="float:right"><code>ViewBalanceSlipTest.java</code></span></p>
+            <p><a concordion:run="concordion" href="ViewBalanceSlip.html">Example 1: Viewing a balance slip</a> <span style="float:right"><code>ViewBalanceSlipTest.java</code></span></p>
         </li>
         <li>
-            <p><a href="ViewBalanceSlipForUninitialisedAccountTest.html">Example 2: Viewing a balance slip (when account hasn't yet been created)</a> <span style="float:right"><code>ViewBalanceSlipForUninitialisedAccountTest.java</code></span></p>
+            <p><a concordion:run="concordion" href="ViewBalanceSlipForUninitialisedAccount.html">Example 2: Viewing a balance slip (when account hasn't yet been created)</a> <span style="float:right"><code>ViewBalanceSlipForUninitialisedAccountTest.java</code></span></p>
         </li>
     </ul>
 </div>

@@ -9,19 +9,19 @@
 
 <h1>Viewing a Balance Slip for a New (Uninitialised) Account</h1>
 
-<div class="background-information">
-<p>When customers create create a new bank account, it can take up to 10 minutes to verify their details. During that time, their account is not available to use but they may well attempt to see their opening balance.</p>
-</div>
+<p>When customers create create a new bank account, it can take up to 10 minutes to verify their details. During
+    that time, their account is not available to use but they may well attempt to see their opening balance.</p>
 
 <p>The system should respond to these scenarios appropriately to keep the customer informed.</p>
 
 <h3>Example</h3>
 <div class="example">
-<p>A customer Jane has just requested a new account. The KYC process and security checks are underway and the account has not yet been setup.</code>.</p>
+    <p>A customer Jane has just requested a new account. The KYC process and security checks are underway and the
+        account has not yet been setup.</p>
 
-<p>Jane request her current balance.</p>
+    <p>Jane request her current balance.</p>
 
-<p>The system reports back with an appropriate message.</p> <!-- note the definition of an "appropriate message" has not been explicitly stated here -->
+    <p>The system reports back with an <span concordion:assert-true="isUserFriendlyErrorMessage()">appropriate message</span>.</p> <!-- note the definition of an "appropriate message" has not been explicitly stated here -->
 </div>
 
 <div class="information">
@@ -29,7 +29,7 @@
     <ul>
         <li><a href="index.html">Overview</a></li>
         <li><a href="ViewBalanceSlip.html">View the current balance</a></li>
-        <li><a href="ViewBalanceSlipForUninitialisedAccountTest.html">What if the account hasn't been setup yet?</a></li>
+        <li><a href="ViewBalanceSlipForUninitialisedAccount.html">What if the account hasn't been setup yet?</a></li>
     </ul>
 </div>
 
