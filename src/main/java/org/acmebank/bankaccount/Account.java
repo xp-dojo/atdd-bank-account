@@ -28,10 +28,24 @@ public class Account {
         return success();
     }
 
-    public void transfer(Money amount, Account receiver) {
-        Result withdrawal = withdraw(amount);
-        if (withdrawal.succeeded()) {
-            receiver.deposit(amount);
+    public Transfer transfer(Money amount) {
+        return new Transfer(amount, this);
+    }
+
+    public static class Transfer {
+        private Money amount;
+        private Account sender;
+
+        private Transfer(Money amount, Account sender) {
+            this.amount = amount;
+            this.sender = sender;
+        }
+
+        public void to(Account receiver) {
+            Result withdrawal = sender.withdraw(amount);
+            if (withdrawal.succeeded()) {
+                receiver.deposit(amount);
+            }
         }
     }
 

@@ -69,7 +69,7 @@ class AccountTest {
             Account sender = accountWithBalance(amountOf(10));
             Account receiver = emptyAccount();
 
-            sender.transfer(amountOf(10), receiver);
+            sender.transfer(amountOf(10)).to(receiver);
 
             assertThat(sender.balance()).isEqualTo(ZERO);
             assertThat(receiver.balance()).isEqualTo(amountOf(10));
@@ -81,7 +81,7 @@ class AccountTest {
             Account sender = emptyAccount();
             Account receiver = emptyAccount();
 
-            sender.transfer(amountOf(1), receiver);
+            sender.transfer(amountOf(1)).to(receiver);
 
             assertThat(sender.balance()).isEqualTo(ZERO);
             assertThat(receiver.balance()).isEqualTo(ZERO);
