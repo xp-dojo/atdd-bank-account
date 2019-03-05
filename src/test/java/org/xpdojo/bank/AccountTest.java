@@ -1,13 +1,13 @@
-package org.acmebank.bankaccount;
+package org.xpdojo.bank;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
-import static org.acmebank.bankaccount.Account.accountWithBalance;
-import static org.acmebank.bankaccount.Account.emptyAccount;
-import static org.acmebank.bankaccount.Money.ZERO;
-import static org.acmebank.bankaccount.Money.amountOf;
+import static org.xpdojo.bank.Account.accountWithBalance;
+import static org.xpdojo.bank.Account.emptyAccount;
+import static org.xpdojo.bank.Money.ZERO;
+import static org.xpdojo.bank.Money.amountOf;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("An account")

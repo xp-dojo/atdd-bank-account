@@ -1,15 +1,14 @@
-package org.acmebank.bankaccount;
+package org.xpdojo.bank;
 
-import static org.acmebank.bankaccount.Money.ZERO;
-import static org.acmebank.bankaccount.Result.failure;
-import static org.acmebank.bankaccount.Result.success;
+import static org.xpdojo.bank.Result.failure;
+import static org.xpdojo.bank.Result.success;
 
 public class Account {
 
     private Money balance;
 
     public static Account emptyAccount() {
-        return accountWithBalance(ZERO);
+        return accountWithBalance(Money.ZERO);
     }
 
     public Money balance() {

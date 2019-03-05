@@ -1,4 +1,4 @@
-package org.acmebank.bankaccount;
+package org.xpdojo.bank;
 
 public class Result {
 
