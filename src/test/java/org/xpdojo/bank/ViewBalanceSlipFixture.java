@@ -4,6 +4,7 @@ import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
 
 import java.security.SecureRandom;
+import java.time.Instant;
 
 import static org.xpdojo.bank.Account.*;
 import static org.xpdojo.bank.Money.*;
@@ -17,31 +18,25 @@ public class ViewBalanceSlipFixture {
 		account = accountWithBalance(amountOf(balance));
 	}
 	
-	public BalanceSlip checkCurrentBalance() {
-		return new BalanceSlip(account.balance());
+	public BalanceSlip checkCurrentBalance(String isoUtcDateTime) {
+		return new BalanceSlip(account, isoUtcDateTime);
 	}
 	
 	// Note this is a test fixture only class, it is abstract from the production code
 	class BalanceSlip {
 
-		public Money balance;
-
-		public BalanceSlip(Money balance) {
-			this.balance = balance;
+		public final org.xpdojo.bank.BalanceSlip slip;
+		
+		public BalanceSlip(Account account, String isoUtcDateTime) {
+			this.slip = account.balanceSlip(() -> Instant.parse(isoUtcDateTime));
 		}
 		
 		public String isBalanceEqualTo(long balance) {
-			return this.balance.equals(Money.amountOf(balance)) ? Long.toString(balance) : this.balance.toString();
+			return slip.getBalance().equals(amountOf(balance)) ? Long.toString(balance) : slip.getBalance().toString();
 		}
 
-		public String dateAndTime() {
-			if (randomChoice())
-				return "current date and time";
-			return "12 Feb 2019";
-		}
-
-		private boolean randomChoice() {
-			return new SecureRandom().nextBoolean();
+		public boolean isDateAndTimeEqualTo(String isoUtcDateTime) {
+			return slip.getAsAt().equals(Instant.parse(isoUtcDateTime));
 		}
 	}
 }

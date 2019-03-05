@@ -34,6 +34,10 @@ public class Account {
         }
     }
 
+	public BalanceSlip balanceSlip(Clock clock) {
+    	return new BalanceSlip(balance, clock);
+	}
+
     private Account(Money balance) {
         this.balance = balance;
     }
