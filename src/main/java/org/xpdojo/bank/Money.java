@@ -35,9 +35,7 @@ public class Money {
 
     @Override
     public String toString() {
-        return "Money{" +
-                "amount=" + amount +
-                '}';
+        return String.format("Money{amount=%s}", amount);
     }
 
     @Override

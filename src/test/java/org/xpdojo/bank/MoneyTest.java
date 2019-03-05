@@ -1,7 +1,10 @@
 package org.xpdojo.bank;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.Test;
 
+import static com.sun.jmx.snmp.ThreadContext.contains;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.xpdojo.bank.Money.*;
@@ -32,5 +35,11 @@ class MoneyTest {
 	void takingNegativeMoniesAway() {
 		assertThat(amountOf(10).minus(amountOf(-14)), is(amountOf(24)));
 	}
+
+	@Test
+	public void stringRepresentation() {
+		assertThat(amountOf(100).toString(), containsString("100"));
+	}
+
 
 }
