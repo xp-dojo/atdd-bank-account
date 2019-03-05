@@ -5,32 +5,35 @@ import org.junit.runner.RunWith;
 
 import java.security.SecureRandom;
 
+import static org.xpdojo.bank.Account.*;
+import static org.xpdojo.bank.Money.*;
+
 @RunWith(ConcordionRunner.class)
 public class ViewBalanceSlipFixture {
 
-	private long balance;
+	private Account account;
 
 	public void setCurrentBalance(long balance) {
-		// instead of setting up the system under to test with an account and balance, 
-		// we store the balance here (as we haven't implemented the former yet)
-		this.balance = balance;
+		account = accountWithBalance(amountOf(balance));
 	}
 	
 	public BalanceSlip checkCurrentBalance() {
-		// connect to system under test and retrieve the balance (again, "faking" it 
-		// with a local variable
-		return new BalanceSlip(balance);
+		return new BalanceSlip(account.balance());
 	}
 	
 	// Note this is a test fixture only class, it is abstract from the production code
 	class BalanceSlip {
 
-		public long balance;
+		public Money balance;
 
-		public BalanceSlip(long balance) {
+		public BalanceSlip(Money balance) {
 			this.balance = balance;
 		}
 		
+		public String isBalanceEqualTo(long balance) {
+			return this.balance.equals(Money.amountOf(balance)) ? Long.toString(balance) : this.balance.toString();
+		}
+
 		public String dateAndTime() {
 			if (randomChoice())
 				return "current date and time";
