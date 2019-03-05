@@ -37,9 +37,18 @@ class MoneyTest {
 	}
 
 	@Test
+	void lessThan() {
+		assertThat(amountOf(0).isLessThan(amountOf(0)), is(false));
+		assertThat(amountOf(10).isLessThan(amountOf(10)), is(false));
+		assertThat(amountOf(10).isLessThan(amountOf(11)), is(true));
+		assertThat(amountOf(11).isLessThan(amountOf(10)), is(false));
+		assertThat(amountOf(-10).isLessThan(amountOf(10)), is(true));
+		assertThat(amountOf(10).isLessThan(amountOf(-10)), is(false));
+	}
+	
+	@Test
 	public void stringRepresentation() {
 		assertThat(amountOf(100).toString(), containsString("100"));
 	}
-
-
+	
 }
