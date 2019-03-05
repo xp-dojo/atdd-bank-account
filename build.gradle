@@ -10,10 +10,13 @@ repositories {
 
 dependencies {
     testCompile "org.concordion:concordion:2.2.0"
+    testCompile 'org.junit.jupiter:junit-jupiter:5.4.0'
+    testCompile 'org.assertj:assertj-core:3.12.1'
 }
 
 test {
     systemProperties['concordion.output.dir'] = "$reporting.baseDir/spec"
     testLogging.showStandardStreams = true
     outputs.upToDateWhen { false }
+    useJUnitPlatform()
 }
