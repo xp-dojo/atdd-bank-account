@@ -1,0 +1,19 @@
+apply plugin: 'java'
+
+wrapper {
+    gradleVersion = "4.8.1"
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile "org.concordion:concordion:2.2.0"
+}
+
+test {
+    systemProperties['concordion.output.dir'] = "$reporting.baseDir/spec"
+    testLogging.showStandardStreams = true
+    outputs.upToDateWhen { false }
+}
