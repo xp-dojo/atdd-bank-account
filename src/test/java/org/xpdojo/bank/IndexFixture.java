@@ -5,6 +5,6 @@ import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
 
 @RunWith(ConcordionRunner.class)
-@ConcordionResources(value = { "../../../../resources/concordion.css" }, includeDefaultStyling = false)
+@ConcordionResources(value = { "../../../../resources/concordion.css" })
 public class IndexFixture {
 }

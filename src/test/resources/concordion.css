@@ -20,6 +20,7 @@ p, td, th, li, .breadcrumbs {
 }
 p, li {
   line-height: 140%;
+  max-width: none;
 }
 table {
   border-collapse: collapse;
