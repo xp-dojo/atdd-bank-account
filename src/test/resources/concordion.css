@@ -91,3 +91,15 @@ li {
     margin-bottom: 8px;
     font-size: 12pt;
 }
+
+.footer {
+  text-align: right;
+  margin-top: 40px;
+  font-size: 8pt;
+  width: 100%;
+  color: #999;
+}
+
+.footer .testTime {
+  padding: 2px 0 0 0;
+}
