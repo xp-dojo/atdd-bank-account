@@ -1,15 +1,16 @@
 package org.xpdojo.bank;
 
+import org.concordion.api.ConcordionResources;
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
 
-import java.security.SecureRandom;
 import java.time.Instant;
 
-import static org.xpdojo.bank.Account.*;
-import static org.xpdojo.bank.Money.*;
+import static org.xpdojo.bank.Account.accountWithBalance;
+import static org.xpdojo.bank.Money.amountOf;
 
 @RunWith(ConcordionRunner.class)
+@ConcordionResources(value = { "../../../../resources/concordion.css" })
 public class ViewBalanceSlipFixture {
 
 	private Account account;
@@ -32,11 +33,15 @@ public class ViewBalanceSlipFixture {
 		}
 		
 		public String isBalanceEqualTo(long balance) {
-			return slip.getBalance().equals(amountOf(balance)) ? Long.toString(balance) : slip.getBalance().toString();
+			return slip.getBalance().equals(amountOf(balance)) ? "correct" : "incorrect";
 		}
 
 		public boolean isDateAndTimeEqualTo(String isoUtcDateTime) {
 			return slip.getAsAt().equals(Instant.parse(isoUtcDateTime));
+		}
+		
+		public String toString() {
+			return slip.toString();
 		}
 	}
 }
