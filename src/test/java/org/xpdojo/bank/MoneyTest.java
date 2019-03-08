@@ -1,14 +1,10 @@
 package org.xpdojo.bank;
 
-import org.junit.Ignore;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import static java.lang.Long.*;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.xpdojo.bank.Money.amountOf;
 
 class MoneyTest {
@@ -21,19 +17,6 @@ class MoneyTest {
 	@Test
 	void addingNegativeMonies() {
 		assertThat(amountOf(10).plus(amountOf(-14)), is(amountOf(-4)));
-	}
-
-	@Test
-	@Disabled
-	void addingBigMoneySafely() {
-		assertThat(amountOf(MAX_VALUE / 2).plus(amountOf(MAX_VALUE / 2)), is(amountOf(MAX_VALUE)));
-	}
-
-	@Test
-	@Disabled
-	void addingBigMoney() {
-		assertThrows(IllegalArgumentException.class, () -> amountOf(MAX_VALUE).plus(amountOf(1)));
-		assertThrows(IllegalArgumentException.class, () -> amountOf(MAX_VALUE / 2).plus(amountOf((MAX_VALUE / 2) + 1)));
 	}
 
 	@Test
