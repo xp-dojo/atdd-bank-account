@@ -9,7 +9,7 @@ pre {
   background-color: #E8EEF7;
 }
 pre, pre *, code, code *, kbd {
-  font-family: Courier New, Courier;
+  font-family: monospace;
   font-size: 10pt;
 }
 h1, h1 * {
