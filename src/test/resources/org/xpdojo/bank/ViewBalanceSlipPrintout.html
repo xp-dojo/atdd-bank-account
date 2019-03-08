@@ -10,19 +10,19 @@
 
 <h1>Viewing a Balance Slip Printout</h1>
 
-<p>Our customer's are going to want to see their current balance.</p>
+<p>Once we're able to relay a customer's current balance, we really should be able to present it in a way that gets all
+    the information across and looks as you'd expect.</p>
 
-<p>The system should therefore be able to respond with a customer's current balance at the point in time they request it.</p>
+<p>The difficultly is in describing "as you'd expect". That's where this test comes in.</p>
 
 <div class="example">
     <h3>Example</h3>
     <div>
-        <p concordion:execute="setCurrentBalance(#balance)">Dale has an account with a balance of <code concordion:set="#balance">1045</code>.</p>
+        <p>Jane has an account with us.</p>
 
-        <p concordion:execute="#result = checkCurrentBalance(#dateTime)">Dale checks his balance at <code concordion:set="#dateTime">2019-02-03T10:15:30.00Z</code>.</p>
+        <p>Jane checks her balance.</p>
 
-        <p>The system <span concordion:assert-equals="#result.isBalanceEqualTo(#balance)">correctly</span> reports the balance <code concordion:echo="#result.getActualBalanceFromSlip()"></code> (along with the <span concordion:assert-true="#result.isDateAndTimeEqualTo(#dateTime)">current date and time</span>).
-        </p>
+        <p>Jane should see a <span>pretty balance slip</span>.</p>
     </div>
 </div>
 
