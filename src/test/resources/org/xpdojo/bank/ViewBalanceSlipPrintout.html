@@ -24,24 +24,24 @@
 
         <p>The ATM printer module should receive the following, which it will then print.</p>
         
-        <pre style="max-width: 18em">
+        <pre style="max-width: 18em" concordion:assert-equals="printBalanceSlip()">
 -----------------------------
-         XP DOJO BANK
+         XP DOJO BANK        
 -----------------------------
 
 Terminal #            1003423
 Date               2019-02-03
-Time 24H                10:15    
-            
+Time 24H                10:15
+
 Account           XXXXXXXXXXX
 
-Your current 
-balance is:        £ 1,000.00
+Your current                 
+balance is:         £1,000.00
 
 
 
-  for a great deal on loans
-  visit https://xpdojo.org
+  for a great deal on loans  
+  visit https://xpdojo.org   
 -----------------------------
         </pre>
     </div>
