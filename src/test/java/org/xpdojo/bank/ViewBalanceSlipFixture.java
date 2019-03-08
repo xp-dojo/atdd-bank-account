@@ -33,11 +33,15 @@ public class ViewBalanceSlipFixture {
 		}
 		
 		public String isBalanceEqualTo(long balance) {
-			return slip.getBalance().equals(amountOf(balance)) ? "correct" : "incorrect";
+			return slip.getBalance().equals(amountOf(balance)) ? "correctly" : "incorrectly";
 		}
 
 		public boolean isDateAndTimeEqualTo(String isoUtcDateTime) {
 			return slip.getAsAt().equals(Instant.parse(isoUtcDateTime));
+		}
+		
+		public String getActualBalanceFromSlip() {
+			return slip.getBalance().toString();
 		}
 		
 		public String toString() {

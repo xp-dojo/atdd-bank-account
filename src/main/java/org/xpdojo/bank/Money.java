@@ -35,7 +35,7 @@ public class Money {
 
     @Override
     public String toString() {
-        return String.format("Money{amount=%s}", amount);
+        return amount.toString();
     }
 
     @Override

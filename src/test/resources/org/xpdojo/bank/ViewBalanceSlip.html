@@ -21,13 +21,8 @@
 
         <p concordion:execute="#result = checkCurrentBalance(#dateTime)">Dale checks his balance at <code concordion:set="#dateTime">2019-02-03T10:15:30.00Z</code>.</p>
 
-        <p>The system reports back the balance is <span concordion:assert-equals="#result.isBalanceEqualTo(#balance)">correct</span> (along with the <span concordion:assert-true="#result.isDateAndTimeEqualTo(#dateTime)">current date and time</span>).
+        <p>The system <span concordion:assert-equals="#result.isBalanceEqualTo(#balance)">correctly</span> reports the balance <span concordion:echo="#result.getActualBalanceFromSlip()"></span> (along with the <span concordion:assert-true="#result.isDateAndTimeEqualTo(#dateTime)">current date and time</span>).
         </p>
-        
-        <div>
-            <p>The string represnation looks lie this:</p>
-            <pre concordion:echo="#result.toString()"></pre>
-        </div>
     </div>
 </div>
 
