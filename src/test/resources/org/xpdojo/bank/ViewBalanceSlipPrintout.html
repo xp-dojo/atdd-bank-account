@@ -1,28 +1,49 @@
 <!DOCTYPE html>
 <html xmlns:concordion="http://www.concordion.org/2007/concordion">
 <head>
-    <title>Viewing a Balance Slip</title>
+    <title>Printing a Balance Slip</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link href="../../../concordion.css" rel="stylesheet" type="text/css"/>
 </head>
 
 <body>
 
-<h1>Viewing a Balance Slip Printout</h1>
+<h1>Printing a Balance Slip</h1>
 
-<p>Once we're able to relay a customer's current balance, we really should be able to present it in a way that gets all
-    the information across and looks as you'd expect.</p>
+<p>The ATM network we are targeting all contain mini printers. We'd like to be able to physically print the customer's
+    balance using these.</p>
 
-<p>The difficultly is in describing "as you'd expect". That's where this test comes in.</p>
+<p>The printer modules are contrained to 30x120 characters.</p>
 
 <div class="example">
     <h3>Example</h3>
     <div>
         <p>Jane has an account with us.</p>
 
-        <p>Jane checks her balance.</p>
+        <p>Jane checks her balance at an ATM. The ATM sends the balance request to us and expects a value back which it will print verbatim.</p>
 
-        <p>Jane should see a <span>pretty balance slip</span>.</p>
+        <p>The ATM printer module should receive the following, which it will then print.</p>
+        
+        <pre style="max-width: 18em">
+-----------------------------
+         XP DOJO BANK
+-----------------------------
+
+Terminal #            1003423
+Date               2019-02-03
+Time 24H                10:15    
+            
+Account           XXXXXXXXXXX
+
+Your current 
+balance is:        £ 1,000.00
+
+
+
+  for a great deal on loans
+  visit https://xpdojo.org
+-----------------------------
+        </pre>
     </div>
 </div>
 
