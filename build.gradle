@@ -9,35 +9,27 @@ repositories {
 }
 
 sourceSets {
-    unitTest {
-        java {
-            compileClasspath += main.output + test.output
-            runtimeClasspath += main.output + test.output
-            srcDir file('src/test/unit/java')
-        }
+    test {
+        java.srcDir file('src/test/unit/java')
         resources.srcDir file('src/test/unit/resources')
     }
     acceptanceTest {
-        java {
-            compileClasspath += main.output + test.output
-            runtimeClasspath += main.output + test.output
-            srcDir file('src/test/acceptance/java')
-        }
+        java.srcDir file('src/test/acceptance/java')
         resources.srcDir file('src/test/acceptance/resources')
+        compileClasspath += main.output + test.output
+        runtimeClasspath += main.output + test.output
     }
 }
 
-//configurations {
-//    unitTest.extendsFrom testCompile
-//    unitTest.extendsFrom testRuntime
-//    acceptanceTest.extendsFrom testCompile
-//    acceptanceTest.extendsFrom testRuntime
-//}
+configurations {
+    acceptanceTest.extendsFrom testCompile
+    acceptanceTest.extendsFrom testRuntime
+}
 
 dependencies {
-    unitTestCompile 'org.junit.jupiter:junit-jupiter:5.4.0'
-    unitTestCompile 'org.assertj:assertj-core:3.12.1'
-    unitTestCompile 'org.hamcrest:hamcrest-core:2.1'
+    testCompile 'org.junit.jupiter:junit-jupiter:5.4.0'
+    testCompile 'org.assertj:assertj-core:3.12.1'
+    testCompile 'org.hamcrest:hamcrest-core:2.1'
     acceptanceTestCompile 'org.concordion:concordion:2.2.0'
 }
 
@@ -54,12 +46,4 @@ task acceptanceTest(type: Test) {
     outputs.upToDateWhen { false }
 }
 
-task unitTest(type: Test) {
-    testClassesDirs = sourceSets.unitTest.output.classesDirs
-    classpath = sourceSets.unitTest.runtimeClasspath
-    outputs.upToDateWhen { false }
-}
-
-check.dependsOn tasks.withType(Test)
-unitTest.mustRunAfter test
-acceptanceTest.mustRunAfter unitTest
+test.dependsOn acceptanceTest
