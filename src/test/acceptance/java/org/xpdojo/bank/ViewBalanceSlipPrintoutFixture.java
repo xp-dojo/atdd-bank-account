@@ -15,7 +15,7 @@ import static org.xpdojo.bank.Account.accountWithBalance;
 import static org.xpdojo.bank.Money.amountOf;
 
 @RunWith(ConcordionRunner.class)
-@ConcordionResources(value = {"../../../../resources/concordion.css"})
+@ConcordionResources(value = {"../../../concordion.css"})
 public class ViewBalanceSlipPrintoutFixture {
 
 	public String printBalanceSlip() {
