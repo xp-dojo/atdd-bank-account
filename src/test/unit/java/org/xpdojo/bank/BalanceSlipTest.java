@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Instant;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.xpdojo.bank.Account.*;
 import static org.xpdojo.bank.Money.amountOf;
 

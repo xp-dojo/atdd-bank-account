@@ -1,14 +1,13 @@
 package org.xpdojo.bank;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.xpdojo.bank.Account.accountWithBalance;
 import static org.xpdojo.bank.Account.emptyAccount;
 import static org.xpdojo.bank.Money.ZERO;
 import static org.xpdojo.bank.Money.amountOf;
-import static org.assertj.core.api.Assertions.assertThat;
 
 class AccountTest {
 
@@ -18,6 +17,11 @@ class AccountTest {
 		assertThat(account.balance()).isEqualTo(ZERO);
 	}
 
+	@Test
+	void testingGradle() {
+		fail("why doesn't gradle detect this?");
+	}
+	
 	@Test
 	void depositToEmptyAccountShouldIncreaseTheBalance() {
 		Account account = emptyAccount();

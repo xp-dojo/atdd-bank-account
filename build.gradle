@@ -27,16 +27,17 @@ sourceSets {
     }
 }
 
-configurations {
-    unitTest.extendsFrom testCompile
-    unitTest.extendsFrom testRuntime
-    acceptanceTest.extendsFrom testCompile
-    acceptanceTest.extendsFrom testRuntime
-}
+//configurations {
+//    unitTest.extendsFrom testCompile
+//    unitTest.extendsFrom testRuntime
+//    acceptanceTest.extendsFrom testCompile
+//    acceptanceTest.extendsFrom testRuntime
+//}
 
 dependencies {
-    testCompile 'org.junit.jupiter:junit-jupiter:5.4.0'
-    testCompile 'org.assertj:assertj-core:3.12.1'
+    unitTestCompile 'org.junit.jupiter:junit-jupiter:5.4.0'
+    unitTestCompile 'org.assertj:assertj-core:3.12.1'
+    unitTestCompile 'org.hamcrest:hamcrest-core:2.1'
     acceptanceTestCompile 'org.concordion:concordion:2.2.0'
 }
 
@@ -50,14 +51,15 @@ test {
 task acceptanceTest(type: Test) {
     testClassesDirs = sourceSets.acceptanceTest.output.classesDirs
     classpath = sourceSets.acceptanceTest.runtimeClasspath
+    outputs.upToDateWhen { false }
 }
 
 task unitTest(type: Test) {
     testClassesDirs = sourceSets.unitTest.output.classesDirs
     classpath = sourceSets.unitTest.runtimeClasspath
+    outputs.upToDateWhen { false }
 }
 
-check.dependsOn unitTest
-check.dependsOn acceptanceTest
+check.dependsOn tasks.withType(Test)
 unitTest.mustRunAfter test
 acceptanceTest.mustRunAfter unitTest
