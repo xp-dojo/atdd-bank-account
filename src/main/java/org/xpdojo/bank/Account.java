@@ -5,6 +5,7 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BinaryOperator;
+import java.util.stream.Stream;
 
 import static org.xpdojo.bank.Money.*;
 import static org.xpdojo.bank.Result.failure;
@@ -48,6 +49,10 @@ public class Account {
         statement.writeTo(writer);
         return writer.toString();
     }
+    
+    public Stream<Transaction> stream() {
+    	return transactions.stream();
+	}
 
     
     private Account(Money balance) {

@@ -1,25 +1,17 @@
 package org.xpdojo.bank;
 
-import javax.swing.text.DateFormatter;
 import java.io.IOException;
 import java.io.Writer;
 import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 
-import static java.time.LocalDateTime.*;
-import static java.time.ZoneId.systemDefault;
-import static java.time.ZoneOffset.*;
-import static java.time.format.DateTimeFormatter.*;
-import static java.time.format.DateTimeFormatter.ofLocalizedDateTime;
-import static java.time.format.FormatStyle.SHORT;
-import static java.util.Locale.UK;
+import static java.time.LocalDateTime.ofInstant;
+import static java.time.ZoneOffset.UTC;
+import static java.time.format.DateTimeFormatter.ofPattern;
 
 public class BalanceStatement implements Statement {
 
-	private final int MAX_WIDTH = 30
-		;
+	private final int MAX_WIDTH = 30;
+	
 	private final Account account;
 	private final Clock clock;
 	private final String newLine = System.getProperty("line.separator");
