@@ -3,11 +3,16 @@ package org.xpdojo.bank;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.text.DecimalFormat;
+import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 
 import static java.time.Instant.parse;
+import static java.time.LocalDateTime.ofInstant;
 import static java.time.ZoneId.systemDefault;
+import static java.time.ZoneOffset.UTC;
 import static java.time.format.DateTimeFormatter.ofLocalizedDateTime;
+import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.time.format.FormatStyle.SHORT;
 import static java.util.Locale.UK;
 
@@ -24,16 +29,18 @@ class BalanceStatementFixture {
 	}
 
 	public String isBalanceEqualTo(long balance) {
-		return balanceSlip.contains(Long.toString(balance)) ? "correctly" : "incorrectly";
+		String formattedBalance = new DecimalFormat("#,###.00").format(balance);
+		return balanceSlip.contains(formattedBalance) ? "correctly" : "incorrectly";
 	}
 
 	public boolean isDateAndTimeEqualTo(String isoUtcDateTime) {
-		DateTimeFormatter formatter = ofLocalizedDateTime(SHORT).withLocale(UK).withZone(systemDefault());
-		return balanceSlip.contains(formatter.format(parse(isoUtcDateTime)));
+		Instant dateTime = parse(isoUtcDateTime);
+		String formattedDate = ofPattern("dd/MM/yy").format(ofInstant(dateTime, UTC));
+		String formattedTime = ofPattern("HH:mm").format(ofInstant(dateTime, UTC));
+		return balanceSlip.contains(formattedDate) && balanceSlip.contains(formattedTime);
 	}
 
-	// todo remove this
-	public String getActualBalanceFromSlip() {
-		return "???";
+	public String getActualBalanceSlip() {
+		return balanceSlip;
 	}
 }
