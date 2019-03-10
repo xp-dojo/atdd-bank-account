@@ -30,7 +30,29 @@ class BalanceStatementTest {
 		BalanceStatement statement = new BalanceStatement(accountWithBalance(ZERO), now);
 		Writer writer = new StringWriter();
 		statement.writeTo(writer);
-		assertThat(writer.toString(), containsString("03/02/19 10:15"));
+		assertThat(writer.toString(), containsString("03/02/19"));
+		assertThat(writer.toString(), containsString("10:15"));
+	}
+	
+	@Test
+	/* NB this is intentionally loose to assert against the main elements of a balance slip. 
+	* More literal, full text like comparisons are done in the acceptance tests layer */
+	void aBalanceStatementIncludesPreambleAndAdditionalText() throws IOException {
+		Clock now = () -> Instant.parse("2019-02-03T10:15:30Z");
+		BalanceStatement statement = new BalanceStatement(accountWithBalance(amountOf(1000)), now);
+		Writer writer = new StringWriter();
+		statement.writeTo(writer);
+		
+		String balanceSlip = writer.toString();
+		assertThat(balanceSlip, containsString("XP DOJO BANK"));
+		assertThat(balanceSlip, containsString("Terminal #            1003423"));
+		assertThat(balanceSlip, containsString("Date                 03/02/19"));
+		assertThat(balanceSlip, containsString("Time 24H                10:15"));
+		assertThat(balanceSlip, containsString("Account           XXXXXXXXXXX"));
+		assertThat(balanceSlip, containsString("Your current balance is:     " + '\n' + 
+			                                   "                     1,000.00"));
+		assertThat(balanceSlip, containsString("for great deals on loans"));
+		assertThat(balanceSlip, containsString("visit https://xpdojo.org"));
 	}
 	
 	@Test
