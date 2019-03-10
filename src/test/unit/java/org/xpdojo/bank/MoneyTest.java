@@ -44,8 +44,8 @@ class MoneyTest {
 			"-10, 10, true",
 			"10, -10, false"
 	})
-	void lessThanShouldGiveCorrectResult(long amount1, long amount2, boolean result) {
-		assertThat(amountOf(amount1).isLessThan(amountOf(amount2)), is(result));
+	void lessThanShouldGiveCorrectResult(long amount1, long amount2, boolean correctResult) {
+		assertThat(amountOf(amount1).isLessThan(amountOf(amount2)), is(correctResult));
 	}
 	
 	@Test

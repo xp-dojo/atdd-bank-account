@@ -36,8 +36,8 @@ class TransactionTest {
 			"10, 20, 30",
 			"20, 10, 30"
 	})
-	void twoDepositsSumToTotal(long amount1, long amount2, long sum) {
-		assertThat(deposit(amountOf(amount1)).against(deposit(amountOf(amount2))).amount(), is(amountOf(sum)));
+	void twoDepositsSumToTotal(long amount1, long amount2, long expectedSum) {
+		assertThat(deposit(amountOf(amount1)).against(deposit(amountOf(amount2))).amount(), is(amountOf(expectedSum)));
 	}
 
 	@Test
@@ -47,22 +47,22 @@ class TransactionTest {
 
 	@Test
 	void mixOfDepositsAndWithdrawalsShouldSumToTotalOfAllTransactions() {
+		Deposit initialDeposit = deposit(amountOf(10));
 		Transaction result =
 				deposit(amountOf(5)).against(
 					withdraw(amountOf(10)).against(
-						deposit(amountOf(10))));
+						initialDeposit));
 		assertThat(result.amount(), is(amountOf(5)));
 	}
 
 	@Test
 	void moreComplexMixOfDepositsAndWithdrawalsShouldSumToTotalOfAllTransactions() {
+		Deposit initialDeposit = deposit(amountOf(2));
 		Transaction result =
 			withdraw(amountOf(5)).against(
 				deposit(amountOf(20)).against(
 					deposit(amountOf(10)).against(
-							deposit(amountOf(2))
-					)
-				));
+							initialDeposit)));
 		assertThat(result.amount(), is(amountOf(27)));
 	}
 
