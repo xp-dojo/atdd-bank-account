@@ -2,8 +2,6 @@ package org.xpdojo.bank;
 
 import org.junit.jupiter.api.Test;
 
-import java.time.Instant;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.xpdojo.bank.Account.accountWithBalance;
 import static org.xpdojo.bank.Account.emptyAccount;
@@ -68,13 +66,11 @@ class AccountTest {
 		assertThat(receiver.balance()).isEqualTo(ZERO);
 	}
 
-	// todo this would be better using a test double
 	@Test
 	void canRetrieveABalanceSlip() {
-		Clock now = () -> Instant.ofEpochSecond(0);
 		Account account = accountWithBalance(amountOf(1005));
-		BalanceStatement slip = new BalanceStatement(account, now);
-		assertThat(account.generate(slip)).contains("1005");
+		Statement slip = writer -> writer.append("BALANCE SLIP GENERATED");
+		assertThat(account.generate(slip)).isEqualTo("BALANCE SLIP GENERATED");
 	}
 	
 }
