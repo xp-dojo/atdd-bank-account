@@ -41,9 +41,12 @@ test {
 }
 
 task acceptanceTest(type: Test) {
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    description = 'Runs the acceptance tests.'
     testClassesDirs = sourceSets.acceptanceTest.output.classesDirs
     classpath = sourceSets.acceptanceTest.runtimeClasspath
     outputs.upToDateWhen { false }
 }
 
-test.dependsOn acceptanceTest
+check.dependsOn acceptanceTest
+acceptanceTest.mustRunAfter test
