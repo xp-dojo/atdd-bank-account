@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:concordion="http://www.concordion.org/2007/concordion">
+<head>
+    <title>Viewing a Balance Slip for a New (Uninitialised) Account</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../concordion.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+
+<h1>Viewing a Balance Slip for a New (Uninitialised) Account</h1>
+
+<p>When customers create create a new bank account, it can take up to 10 minutes to verify their details. During
+    that time, their account is not available to use but they may well attempt to see their opening balance.</p>
+
+<p>The system should respond to these scenarios appropriately to keep the customer informed.</p>
+
+<h3>Example</h3>
+<div class="example">
+    <p>A customer Jane has just requested a new account. The KYC process and security checks are underway and the
+        account has not yet been setup.</p>
+
+    <p>Jane request her current balance.</p>
+
+    <p>The system reports back with an <span concordion:assert-true="isUserFriendlyErrorMessage()">appropriate message</span>.</p> <!-- note the definition of an "appropriate message" has not been explicitly stated here -->
+</div>
+
+<div class="information">
+    <h3>Further information</h3>
+    <ul>
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="ViewBalanceSlip.html">Viewing the current balance</a></li>
+        <li><a href="ViewBalanceSlipPrintout.html">What does the balance slip actually look like?</a></li>
+        <li><a href="ViewBalanceSlipForUninitialisedAccount.html">What if the account hasn't been setup yet?</a></li>
+    </ul>
+</div>
+
+</body>
+</html>

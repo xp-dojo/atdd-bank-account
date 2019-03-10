@@ -8,11 +8,29 @@ repositories {
     mavenCentral()
 }
 
+sourceSets {
+    test {
+        java.srcDir file('src/test/unit/java')
+        resources.srcDir file('src/test/unit/resources')
+    }
+    acceptanceTest {
+        java.srcDir file('src/test/acceptance/java')
+        resources.srcDir file('src/test/acceptance/resources')
+        compileClasspath += main.output + test.output
+        runtimeClasspath += main.output + test.output
+    }
+}
+
+configurations {
+    acceptanceTest.extendsFrom testCompile
+    acceptanceTest.extendsFrom testRuntime
+}
+
 dependencies {
-    testCompile 'org.concordion:concordion:2.2.0'
     testCompile 'org.junit.jupiter:junit-jupiter:5.4.0'
     testCompile 'org.assertj:assertj-core:3.12.1'
     testCompile 'org.hamcrest:hamcrest-core:2.1'
+    acceptanceTestCompile 'org.concordion:concordion:2.2.0'
 }
 
 test {
@@ -21,3 +39,14 @@ test {
     outputs.upToDateWhen { false }
     useJUnitPlatform()
 }
+
+task acceptanceTest(type: Test) {
+    group = LifecycleBasePlugin.VERIFICATION_GROUP
+    description = 'Runs the acceptance tests.'
+    testClassesDirs = sourceSets.acceptanceTest.output.classesDirs
+    classpath = sourceSets.acceptanceTest.runtimeClasspath
+    outputs.upToDateWhen { false }
+}
+
+check.dependsOn acceptanceTest
+acceptanceTest.mustRunAfter test
