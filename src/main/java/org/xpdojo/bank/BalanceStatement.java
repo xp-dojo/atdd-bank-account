@@ -1,6 +1,7 @@
 package org.xpdojo.bank;
 
-import java.io.StringWriter;
+import java.io.IOException;
+import java.io.Writer;
 import java.time.format.DateTimeFormatter;
 
 import static java.time.ZoneId.systemDefault;
@@ -19,7 +20,7 @@ public class BalanceStatement implements Statement {
 	}
 
 	@Override
-	public void writeTo(StringWriter writer) {
+	public void writeTo(Writer writer) throws IOException  {
 		DateTimeFormatter formatter = ofLocalizedDateTime(SHORT).withLocale(UK).withZone(systemDefault());
 		writer.append(account.balance().toString());
 		writer.append(System.getProperty("line.separator"));

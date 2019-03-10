@@ -18,9 +18,9 @@
 <div class="example">
     <h3>Example</h3>
     <div>
-        <p>Jane has an account with us.</p>
+        <p concordion:execute="setCurrentBalance(#balance)">Jane has an account with us, her balance is <code concordion:set="#balance">1000</code>.</p>
 
-        <p>Jane checks her balance at an ATM. The ATM sends the balance request to us and expects a value back which it will print verbatim.</p>
+        <p concordion:execute="setCurrentDateTime(#dateTime)">Jane checks her balance at an ATM at <code concordion:set="#dateTime">2019-02-03T10:15:30.00Z</code>. The ATM sends the balance request to us and expects a value back which it will print verbatim.</p>
 
         <p>The ATM printer module should receive the following, which it will then print.</p>
         

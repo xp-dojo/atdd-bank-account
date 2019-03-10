@@ -2,6 +2,9 @@ package org.xpdojo.bank;
 
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
+import java.io.StringWriter;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.xpdojo.bank.Account.accountWithBalance;
 import static org.xpdojo.bank.Account.emptyAccount;
@@ -67,10 +70,10 @@ class AccountTest {
 	}
 
 	@Test
-	void canRetrieveABalanceSlip() {
+	void canRetrieveABalanceSlip() throws IOException {
 		Account account = accountWithBalance(amountOf(1005));
 		Statement slip = writer -> writer.append("BALANCE SLIP GENERATED");
-		assertThat(account.generate(slip)).isEqualTo("BALANCE SLIP GENERATED");
+		assertThat(account.generate(slip, new StringWriter())).isEqualTo("BALANCE SLIP GENERATED");
 	}
 	
 }

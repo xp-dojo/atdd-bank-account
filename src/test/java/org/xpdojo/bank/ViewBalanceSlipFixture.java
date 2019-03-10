@@ -4,6 +4,8 @@ import org.concordion.api.ConcordionResources;
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
 
+import java.io.IOException;
+
 import static org.xpdojo.bank.Account.accountWithBalance;
 import static org.xpdojo.bank.Money.amountOf;
 
@@ -17,7 +19,7 @@ public class ViewBalanceSlipFixture {
 		account = accountWithBalance(amountOf(balance));
 	}
 	
-	public BalanceStatementFixture checkCurrentBalance(String isoUtcDateTime) {
+	public BalanceStatementFixture checkCurrentBalance(String isoUtcDateTime) throws IOException {
 		return new BalanceStatementFixture(account, isoUtcDateTime);
 	}
 

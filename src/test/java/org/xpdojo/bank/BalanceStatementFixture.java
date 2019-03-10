@@ -1,6 +1,8 @@
 package org.xpdojo.bank;
 
+import java.io.IOException;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.time.format.DateTimeFormatter;
 
 import static java.time.Instant.parse;
@@ -14,9 +16,9 @@ class BalanceStatementFixture {
 
 	private final String balanceSlip;
 
-	public BalanceStatementFixture(Account account, String isoUtcDateTime) {
+	public BalanceStatementFixture(Account account, String isoUtcDateTime) throws IOException {
 		BalanceStatement statementOfAccount = new BalanceStatement(account, () -> parse(isoUtcDateTime));
-		StringWriter writer = new StringWriter();
+		Writer writer = new StringWriter();
 		statementOfAccount.writeTo(writer);
 		balanceSlip = writer.toString();
 	}

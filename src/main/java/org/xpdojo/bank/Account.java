@@ -1,6 +1,7 @@
 package org.xpdojo.bank;
 
-import java.io.StringWriter;
+import java.io.IOException;
+import java.io.Writer;
 
 import static org.xpdojo.bank.Result.failure;
 import static org.xpdojo.bank.Result.success;
@@ -45,8 +46,7 @@ public class Account {
         return new Account(balance);
     }
 
-    public String generate(Statement statement) {
-        StringWriter writer = new StringWriter();
+    public String generate(Statement statement, Writer writer) throws IOException {
         statement.writeTo(writer);
         return writer.toString();
     }
