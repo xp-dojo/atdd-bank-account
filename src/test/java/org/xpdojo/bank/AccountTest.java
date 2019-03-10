@@ -68,11 +68,13 @@ class AccountTest {
 		assertThat(receiver.balance()).isEqualTo(ZERO);
 	}
 
+	// todo this would be better using a test double
 	@Test
 	void canRetrieveABalanceSlip() {
 		Clock now = () -> Instant.ofEpochSecond(0);
-		BalanceSlip slip = emptyAccount().getBalanceSlip(now);
-		assertThat(slip).isEqualTo(new BalanceSlip(ZERO, now));
+		Account account = accountWithBalance(amountOf(1005));
+		BalanceStatement slip = new BalanceStatement(account, now);
+		assertThat(account.generate(slip)).contains("1005");
 	}
 	
 }

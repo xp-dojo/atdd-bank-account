@@ -1,5 +1,7 @@
 package org.xpdojo.bank;
 
+import java.io.StringWriter;
+
 import static org.xpdojo.bank.Result.failure;
 import static org.xpdojo.bank.Result.success;
 
@@ -34,9 +36,6 @@ public class Account {
         }
     }
 
-	public BalanceSlip getBalanceSlip(Clock clock) {
-    	return new BalanceSlip(balance, clock);
-	}
 
     private Account(Money balance) {
         this.balance = balance;
@@ -44,5 +43,11 @@ public class Account {
 
     static Account accountWithBalance(Money balance) {
         return new Account(balance);
+    }
+
+    public String generate(Statement statement) {
+        StringWriter writer = new StringWriter();
+        statement.writeTo(writer);
+        return writer.toString();
     }
 }
