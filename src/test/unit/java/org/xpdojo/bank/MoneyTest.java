@@ -1,6 +1,8 @@
 package org.xpdojo.bank;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -9,43 +11,45 @@ import static org.xpdojo.bank.Money.amountOf;
 class MoneyTest {
 
 	@Test
-	void addingMonies() {
+	void addingAnAmountShouldGiveTheSumOfTheTwoAmounts() {
 		assertThat(amountOf(10).plus(amountOf(14)), is(amountOf(24)));
 	}
 
 	@Test
-	void addingNegativeMonies() {
+	void addingANegativeAmountShouldSubtractTheEquivalentPositiveAmount() {
 		assertThat(amountOf(10).plus(amountOf(-14)), is(amountOf(-4)));
 	}
 
 	@Test
-	void takingMoniesAway() {
+	void subtractingAnAmountShouldGiveTheSubtractedSum() {
 		assertThat(amountOf(14).minus(amountOf(10)), is(amountOf(4)));
 	}
 
 	@Test
-	void takingMoniesAwayWhenSubtractionIsGreaterThanInitialValue() {
+	void subtractingMoreThanTheCurrentAmountShouldGiveANegativeResult() {
 		assertThat(amountOf(10).minus(amountOf(14)), is(amountOf(-4)));
 	}
 
 	@Test
-	void takingNegativeMoniesAway() {
+	void subtractingANegativeAmountShouldAddTheEquivalentPositiveAmount() {
 		assertThat(amountOf(10).minus(amountOf(-14)), is(amountOf(24)));
 	}
 
-	@Test
-	void lessThan() {
-		assertThat(amountOf(0).isLessThan(amountOf(0)), is(false));
-		assertThat(amountOf(10).isLessThan(amountOf(10)), is(false));
-		assertThat(amountOf(10).isLessThan(amountOf(11)), is(true));
-		assertThat(amountOf(11).isLessThan(amountOf(10)), is(false));
-		assertThat(amountOf(-10).isLessThan(amountOf(10)), is(true));
-		assertThat(amountOf(10).isLessThan(amountOf(-10)), is(false));
+	@ParameterizedTest(name = "{0} is less than {1} should be {2}")
+	@CsvSource({
+			"0, 0, false",
+			"10, 10, false",
+			"10, 11, true",
+			"11, 10, false",
+			"-10, 10, true",
+			"10, -10, false"
+	})
+	void lessThanShouldGiveCorrectResult(long amount1, long amount2, boolean result) {
+		assertThat(amountOf(amount1).isLessThan(amountOf(amount2)), is(result));
 	}
 	
 	@Test
-	public void stringRepresentation() {
+	void stringRepresentationShouldBeFormattedTo2DecimalPlacesWithCommas() {
 		assertThat(amountOf(1000103).toString(), is("1,000,103.00"));
 	}
-	
 }

@@ -48,7 +48,7 @@ class AccountTest {
 	}
 
 	@Test
-	void moneyCanBeTransferredBetweenAccounts() {
+	void transferShouldMoveMoneyFromOneAccountToAnother() {
 		Account sender = accountWithBalance(amountOf(10));
 		Account receiver = emptyAccount();
 
@@ -59,7 +59,7 @@ class AccountTest {
 	}
 
 	@Test
-	void moneyShouldNotBeTransferredWhenItTakesSendingAccountOverdrawn() {
+	void transferShouldNotBeAppliedWhenItTakesSendingAccountOverdrawn() {
 		Account sender = emptyAccount();
 		Account receiver = emptyAccount();
 
@@ -70,10 +70,9 @@ class AccountTest {
 	}
 
 	@Test
-	void canRetrieveABalanceSlip() throws IOException {
-		Account account = accountWithBalance(amountOf(1005));
-		Statement slip = writer -> writer.append("BALANCE SLIP GENERATED");
-		assertThat(account.generate(slip, new StringWriter())).isEqualTo("BALANCE SLIP GENERATED");
+	void statementShouldBeWrittenToSuppliedWriter() throws IOException {
+		Account account = emptyAccount();
+		Statement statement = writer -> writer.append("STATEMENT GENERATED");
+		assertThat(account.writeStatement(statement, new StringWriter())).isEqualTo("STATEMENT GENERATED");
 	}
-	
 }

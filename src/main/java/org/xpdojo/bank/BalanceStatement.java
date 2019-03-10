@@ -10,11 +10,11 @@ import static java.time.format.DateTimeFormatter.ofPattern;
 
 public class BalanceStatement implements Statement {
 
-	private final int MAX_WIDTH = 30;
-	
-	private final Account account;
-	private final Clock clock;
-	private final String newLine = System.getProperty("line.separator");
+	private static final int MAX_WIDTH = 30;
+    private static final String NEW_LINE = System.getProperty("line.separator");
+
+    private final Account account;
+    private final Clock clock;
 
 	public BalanceStatement(Account account, Clock clock) {
 		this.account = account;
@@ -26,22 +26,22 @@ public class BalanceStatement implements Statement {
 		writer.append(header());
 		writer.append(preamble(clock.now()));
 		writer.append(balance());
-		writer.append(newLine);
+		writer.append(NEW_LINE);
 		writer.append(footer());
 	}
 	
 	private String header() {
-		return "-----------------------------" + newLine +
-			   "         XP DOJO BANK        " + newLine +
-			   "-----------------------------" + newLine +
-			   newLine;
+		return "-----------------------------" + NEW_LINE +
+			   "         XP DOJO BANK        " + NEW_LINE +
+			   "-----------------------------" + NEW_LINE +
+                NEW_LINE;
 	}
 	
 	private String preamble(Instant instant) {
-		return "Terminal #            1003423" + newLine +
-			   "Date                 " + getDate(instant) + newLine +
-			   "Time 24H                " + getTime(instant) + newLine + newLine +
-			   "Account           XXXXXXXXXXX" + newLine;
+		return "Terminal #            1003423" + NEW_LINE +
+			   "Date                 " + getDate(instant) + NEW_LINE +
+			   "Time 24H                " + getTime(instant) + NEW_LINE + NEW_LINE +
+			   "Account           XXXXXXXXXXX" + NEW_LINE;
 	}
 	
 	private String getDate(Instant instant) {
@@ -54,7 +54,7 @@ public class BalanceStatement implements Statement {
 	
 	private String balance() {
 		String balance = account.balance().toString();
-		return "Your current balance is:     " + newLine + newLine + padLeft(balance, MAX_WIDTH - 1) + newLine;
+		return "Your current balance is:     " + NEW_LINE + NEW_LINE + padLeft(balance, MAX_WIDTH - 1) + NEW_LINE;
 	}
 
 	private static String padLeft(String value, int amount) {
@@ -62,9 +62,9 @@ public class BalanceStatement implements Statement {
 	}
 	
 	private String footer() {
-		return newLine +
-			   "  for great deals on loans   " + newLine +
-			   "  visit https://xpdojo.org   " + newLine +
+		return NEW_LINE +
+			   "  for great deals on loans   " + NEW_LINE +
+			   "  visit https://xpdojo.org   " + NEW_LINE +
 			   "-----------------------------";
 	}
 }

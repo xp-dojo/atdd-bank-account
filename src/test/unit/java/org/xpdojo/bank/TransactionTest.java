@@ -1,10 +1,11 @@
 package org.xpdojo.bank;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static java.util.Arrays.*;
 import static org.hamcrest.CoreMatchers.is;
@@ -17,60 +18,62 @@ import static org.xpdojo.bank.Transaction.Withdraw.*;
 class TransactionTest {
 
 	@Test
-	void addDepositToZeroAmount() {
-		Deposit initialDeposit = deposit(Money.ZERO);
+	void depositShouldAddDepositAmount() {
+		Deposit initialDeposit = depositOf(ZERO);
 		Transaction result = deposit(amountOf(10)).against(initialDeposit);
-		assertThat(result.getAmount(), is(amountOf(10)));
+		assertThat(result.amount(), is(amountOf(10)));
 	}
 
 	@Test
-	void addWithdrawToCauseAnAmountToBeZeroed() {
+	void withdrawalShouldSubtractWithdrawalAmount() {
 		Deposit initialDeposit = deposit(amountOf(10));
 		Transaction result = withdraw(amountOf(10)).against(initialDeposit);
-		assertThat(result.getAmount(), is(Money.ZERO));
+		assertThat(result.amount(), is(ZERO));
 	}
 	
-	@Test
-	void applyAMixOfTransactions() {
-		Transaction result = deposit(amountOf(5)).against(
-								withdraw(amountOf(10)).against(
-									deposit(amountOf(10))));
-		assertThat(result.getAmount(), is(amountOf(5)));
-	}
-	
-	@Test
-	void canSumDeposits() {
-		assertThat(deposit(amountOf(10)).against(deposit(amountOf(20))).getAmount(), is(amountOf(30)));
-		assertThat(deposit(amountOf(20)).against(deposit(amountOf(10))).getAmount(), is(amountOf(30)));
+	@ParameterizedTest(name = "deposit of {0} and {1} should sum to {2}")
+	@CsvSource({
+			"10, 20, 30",
+			"20, 10, 30"
+	})
+	void twoDepositsSumToTotal(long amount1, long amount2, long sum) {
+		assertThat(deposit(amountOf(amount1)).against(deposit(amountOf(amount2))).amount(), is(amountOf(sum)));
 	}
 
 	@Test
-	void withdrawMoreThanTheInitialDeposit() {
-		assertThat(withdraw(amountOf(5)).against(deposit(amountOf(2))).getAmount(), is(amountOf(-3)));
+	void withdrawalOfMoreThanInitialDepositShouldGiveNegativeTotal() {
+		assertThat(withdraw(amountOf(5)).against(deposit(amountOf(2))).amount(), is(amountOf(-3)));
 	}
-	
+
 	@Test
-	void canSumMoreComplexSeriesOfDeposits() {
-		Deposit initialDeposit = deposit(amountOf(2));
-		Transaction balance =
+	void mixOfDepositsAndWithdrawalsShouldSumToTotalOfAllTransactions() {
+		Transaction result =
+				deposit(amountOf(5)).against(
+					withdraw(amountOf(10)).against(
+						deposit(amountOf(10))));
+		assertThat(result.amount(), is(amountOf(5)));
+	}
+
+	@Test
+	void moreComplexMixOfDepositsAndWithdrawalsShouldSumToTotalOfAllTransactions() {
+		Transaction result =
 			withdraw(amountOf(5)).against(
 				deposit(amountOf(20)).against(
 					deposit(amountOf(10)).against(
-						initialDeposit
+							deposit(amountOf(2))
 					)
 				));
-		assertThat(balance.getAmount(), is(amountOf(27)));
+		assertThat(result.amount(), is(amountOf(27)));
 	}
 
 	@Test
-	void canFoldOverReducingToCurrentBalance() {
+	void reducingAStreamOfTransactionsShouldGiveCurrentBalance() {
 		List<Transaction> transactions = asList(
 			deposit(amountOf(10)),
 			deposit(amountOf(20)),
 			withdraw(amountOf(5))
 		);
 		Optional<Transaction> reduce = transactions.stream().reduce((a, b) -> b.against(a));
-		assertThat(reduce.get().getAmount(), is(amountOf(25)));
+		assertThat(reduce.get().amount(), is(amountOf(25)));
 	}
-
 }
