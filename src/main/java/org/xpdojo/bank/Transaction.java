@@ -26,7 +26,7 @@ public abstract class Transaction {
 		}
 
 		public Transaction against(Transaction other) {
-			return new Identity(super.amount.plus(other.amount));
+			return new Identity(other.amount.plus(super.amount));
 		}
 
 	}
