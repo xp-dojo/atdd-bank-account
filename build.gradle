@@ -12,6 +12,7 @@ dependencies {
     testCompile 'org.concordion:concordion:2.2.0'
     testCompile 'org.junit.jupiter:junit-jupiter:5.4.0'
     testCompile 'org.assertj:assertj-core:3.12.1'
+    testCompile 'org.hamcrest:hamcrest-core:2.1'
 }
 
 test {

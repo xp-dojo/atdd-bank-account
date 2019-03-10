@@ -69,10 +69,10 @@ class AccountTest {
 	}
 
 	@Test
-	public void canRetrieveABalanceSlip() {
+	void canRetrieveABalanceSlip() {
 		Clock now = () -> Instant.ofEpochSecond(0);
 		BalanceSlip slip = emptyAccount().getBalanceSlip(now);
 		assertThat(slip).isEqualTo(new BalanceSlip(ZERO, now));
 	}
-
+	
 }
