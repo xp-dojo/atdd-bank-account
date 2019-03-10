@@ -62,7 +62,7 @@ public class BalanceStatement implements Statement {
 	
 	private String balance() {
 		String balance = account.balance().toString();
-		return "Your current balance is:     " + newLine + padLeft(balance, MAX_WIDTH - 1) + newLine;
+		return "Your current balance is:     " + newLine + newLine + padLeft(balance, MAX_WIDTH - 1) + newLine;
 	}
 
 	private static String padLeft(String value, int amount) {

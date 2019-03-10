@@ -16,7 +16,6 @@ import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.time.format.FormatStyle.SHORT;
 import static java.util.Locale.UK;
 
-// Note this is a test fixture only class, it is abstract from the production code
 class BalanceStatementFixture {
 
 	private final String balanceSlip;

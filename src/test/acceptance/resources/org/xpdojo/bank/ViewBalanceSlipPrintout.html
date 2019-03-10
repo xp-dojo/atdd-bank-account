@@ -20,7 +20,9 @@
     <div>
         <p concordion:execute="setCurrentBalance(#balance)">Jane has an account with us, her balance is <code concordion:set="#balance">1000</code>.</p>
 
-        <p concordion:execute="setCurrentDateTime(#dateTime)">Jane checks her balance at an ATM at <code concordion:set="#dateTime">2019-02-03T10:15:30.00Z</code>. The ATM sends the balance request to us and expects a value back which it will print verbatim.</p>
+        <p concordion:execute="setCurrentDateTime(#dateTime)">Jane checks her balance at an ATM at <code concordion:set="#dateTime">2019-02-03T10:15:30.00Z</code>. </p>
+            
+        <p>The ATM sends the balance request to us and expects a value back which it will print verbatim.</p>
 
         <p>The ATM printer module should receive the following, which it will then print.</p>
         
@@ -30,17 +32,17 @@
 -----------------------------
 
 Terminal #            1003423
-Date               2019-02-03
+Date                 03/02/19
 Time 24H                10:15
 
 Account           XXXXXXXXXXX
 
-Your current                 
-balance is:         £1,000.00
+Your current balance is:     
+                     
+                     1,000.00
 
 
-
-  for a great deal on loans  
+  for great deals on loans  
   visit https://xpdojo.org   
 -----------------------------
         </pre>

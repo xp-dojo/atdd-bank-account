@@ -49,8 +49,8 @@ class BalanceStatementTest {
 		assertThat(balanceSlip, containsString("Date                 03/02/19"));
 		assertThat(balanceSlip, containsString("Time 24H                10:15"));
 		assertThat(balanceSlip, containsString("Account           XXXXXXXXXXX"));
-		assertThat(balanceSlip, containsString("Your current balance is:     " + '\n' + 
-			                                   "                     1,000.00"));
+		assertThat(balanceSlip, containsString("Your current balance is:     "));
+		assertThat(balanceSlip, containsString("                     1,000.00"));
 		assertThat(balanceSlip, containsString("for great deals on loans"));
 		assertThat(balanceSlip, containsString("visit https://xpdojo.org"));
 	}
