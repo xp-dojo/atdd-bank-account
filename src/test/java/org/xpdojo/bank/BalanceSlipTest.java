@@ -14,7 +14,7 @@ class BalanceSlipTest {
 	@Test
 	void getBalanceSlip() {
 		Clock now = () -> Instant.parse("2019-02-03T10:15:30Z");
-		BalanceSlip actual = accountWithBalance(amountOf(100)).balanceSlip(now);
+		BalanceSlip actual = accountWithBalance(amountOf(100)).getBalanceSlip(now);
 		BalanceSlip expected = new BalanceSlip(amountOf(100), now);
 		assertThat(actual, is(expected));
 	}

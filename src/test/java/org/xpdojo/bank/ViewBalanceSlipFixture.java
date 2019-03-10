@@ -29,7 +29,7 @@ public class ViewBalanceSlipFixture {
 		public final org.xpdojo.bank.BalanceSlip slip;
 		
 		public BalanceSlip(Account account, String isoUtcDateTime) {
-			this.slip = account.balanceSlip(() -> Instant.parse(isoUtcDateTime));
+			this.slip = account.getBalanceSlip(() -> Instant.parse(isoUtcDateTime));
 		}
 		
 		public String isBalanceEqualTo(long balance) {

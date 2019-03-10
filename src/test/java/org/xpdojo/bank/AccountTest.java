@@ -1,14 +1,14 @@
 package org.xpdojo.bank;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+import java.time.Instant;
+
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.xpdojo.bank.Account.accountWithBalance;
 import static org.xpdojo.bank.Account.emptyAccount;
 import static org.xpdojo.bank.Money.ZERO;
 import static org.xpdojo.bank.Money.amountOf;
-import static org.assertj.core.api.Assertions.assertThat;
 
 class AccountTest {
 
@@ -67,4 +67,12 @@ class AccountTest {
 		assertThat(sender.balance()).isEqualTo(ZERO);
 		assertThat(receiver.balance()).isEqualTo(ZERO);
 	}
+
+	@Test
+	public void canRetrieveABalanceSlip() {
+		Clock now = () -> Instant.ofEpochSecond(0);
+		BalanceSlip slip = emptyAccount().getBalanceSlip(now);
+		assertThat(slip).isEqualTo(new BalanceSlip(ZERO, now));
+	}
+
 }

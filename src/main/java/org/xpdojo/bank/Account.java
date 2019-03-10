@@ -34,7 +34,7 @@ public class Account {
         }
     }
 
-	public BalanceSlip balanceSlip(Clock clock) {
+	public BalanceSlip getBalanceSlip(Clock clock) {
     	return new BalanceSlip(balance, clock);
 	}
 
