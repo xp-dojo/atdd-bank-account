@@ -47,22 +47,22 @@ class TransactionTest {
 
 	@Test
 	void mixOfDepositsAndWithdrawalsShouldSumToTotalOfAllTransactions() {
+		Deposit initialDeposit = deposit(amountOf(10));
 		Transaction result =
 				deposit(amountOf(5)).against(
 					withdraw(amountOf(10)).against(
-						deposit(amountOf(10))));
+						initialDeposit));
 		assertThat(result.amount(), is(amountOf(5)));
 	}
 
 	@Test
 	void moreComplexMixOfDepositsAndWithdrawalsShouldSumToTotalOfAllTransactions() {
+		Deposit initialDeposit = deposit(amountOf(2));
 		Transaction result =
 			withdraw(amountOf(5)).against(
 				deposit(amountOf(20)).against(
 					deposit(amountOf(10)).against(
-							deposit(amountOf(2))
-					)
-				));
+							initialDeposit)));
 		assertThat(result.amount(), is(amountOf(27)));
 	}
 
