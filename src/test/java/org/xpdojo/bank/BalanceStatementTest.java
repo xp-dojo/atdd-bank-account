@@ -34,7 +34,7 @@ class BalanceStatementTest {
 	}
 	
 	@Test
-	void exceptionsArePropogatedFromTheWriter() {
+	void exceptionsArePropagatedFromTheWriter() {
 		Writer erroringWriter = new ErroringWriter();
 		BalanceStatement statement = new BalanceStatement(accountWithBalance(ZERO), () -> Instant.ofEpochMilli(0));
 		assertThrows(IOException.class, () -> statement.writeTo(erroringWriter));
