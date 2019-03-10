@@ -2,31 +2,38 @@ package org.xpdojo.bank;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.function.BinaryOperator;
 
+import static org.xpdojo.bank.Money.*;
 import static org.xpdojo.bank.Result.failure;
 import static org.xpdojo.bank.Result.success;
+import static org.xpdojo.bank.Transaction.*;
+import static org.xpdojo.bank.Transaction.Deposit;
+import static org.xpdojo.bank.Transaction.Withdraw;
 
 public class Account {
 
-    private Money balance;
-
+    private final List<Transaction> transactions = new ArrayList<>();
+    
     public static Account emptyAccount() {
-        return accountWithBalance(Money.ZERO);
+        return accountWithBalance(ZERO);
     }
 
     public Money balance() {
-        return balance;
+	 	return transactions.stream().reduce(sum()).orElse(Deposit.deposit(ZERO)).getAmount();
     }
 
-    public void deposit(Money amount) {
-        balance = balance.plus(amount);
+	public void deposit(Money amount) {
+        transactions.add(Deposit.deposit(amount));
     }
 
     public Result withdraw(Money amount) {
-        if (balance.isLessThan(amount)) {
+        if (balance().isLessThan(amount)) 
             return failure();
-        }
-        balance = balance.minus(amount);
+        
+        transactions.add(Withdraw.withdraw(amount));
         return success();
     }
 
@@ -36,18 +43,22 @@ public class Account {
             receiver.deposit(amount);
         }
     }
+    
+    public String generate(Statement statement, Writer writer) throws IOException {
+        statement.writeTo(writer);
+        return writer.toString();
+    }
 
-
+    
     private Account(Money balance) {
-        this.balance = balance;
+        deposit(balance);
     }
 
     static Account accountWithBalance(Money balance) {
         return new Account(balance);
     }
 
-    public String generate(Statement statement, Writer writer) throws IOException {
-        statement.writeTo(writer);
-        return writer.toString();
+    private BinaryOperator<Transaction> sum() {
+        return (a, b) -> new Identity(b.against(a).getAmount());
     }
 }
