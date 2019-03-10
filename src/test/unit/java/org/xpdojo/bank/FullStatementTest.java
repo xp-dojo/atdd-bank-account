@@ -8,26 +8,28 @@ import java.io.Writer;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.xpdojo.bank.Account.emptyAccount;
+import static org.xpdojo.bank.Money.amountOf;
 
 class FullStatementTest {
 
-	private final String newLine = System.getProperty("line.separator");
+	private static final String NEW_LINE = System.getProperty("line.separator");
 
 	@Test
-	void fullStatement() throws IOException {
-		Account account = Account.emptyAccount();
-		account.deposit(Money.amountOf(10));
-		account.deposit(Money.amountOf(20));
-		account.withdraw(Money.amountOf(15));
+	void aFullStatementShouldIncludeAllTransactionsInOrderWithEachOnItsOwnRow() throws IOException {
+		Account account = emptyAccount();
+		account.deposit(amountOf(10));
+		account.deposit(amountOf(20));
+		account.withdraw(amountOf(15));
 
 		FullStatement statement = new FullStatement(account);
 		Writer writer = new StringWriter();
 		statement.writeTo(writer);
 
 		String expected =
-			"Deposit .00"   + newLine +
-			"Deposit 10.00" + newLine +
-			"Deposit 20.00" + newLine +
+			"Deposit .00"   + NEW_LINE +
+			"Deposit 10.00" + NEW_LINE +
+			"Deposit 20.00" + NEW_LINE +
 			"Withdraw 15.00";
 		assertThat(writer.toString(), is(expected));
 	}

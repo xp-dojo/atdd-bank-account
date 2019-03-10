@@ -36,8 +36,8 @@ class TransactionTest {
 			"10, 20, 30",
 			"20, 10, 30"
 	})
-	void twoDepositsSumToTotal(long amount1, long amount2, long sum) {
-		assertThat(deposit(amountOf(amount1)).against(deposit(amountOf(amount2))).amount(), is(amountOf(sum)));
+	void twoDepositsSumToTotal(long amount1, long amount2, long expectedSum) {
+		assertThat(deposit(amountOf(amount1)).against(deposit(amountOf(amount2))).amount(), is(amountOf(expectedSum)));
 	}
 
 	@Test
