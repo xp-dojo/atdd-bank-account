@@ -8,7 +8,7 @@ import static java.util.stream.Collectors.joining;
 
 public class FullStatement implements Statement {
 
-	private final String newLine = System.getProperty("line.separator");
+	private static final String NEW_LINE = System.getProperty("line.separator");
 	
 	private final Account account;
 
@@ -18,10 +18,10 @@ public class FullStatement implements Statement {
 
 	@Override
 	public void writeTo(Writer writer) throws IOException {
-		writer.append(account.stream().map(getLine()).collect(joining(newLine)));
+		writer.append(account.transactions().map(toStatementLine()).collect(joining(NEW_LINE)));
 	}
 
-	private Function<Transaction, String> getLine() {
-		return transaction -> transaction.getClass().getSimpleName() + " " + transaction.getAmount().toString();
+	private Function<Transaction, String> toStatementLine() {
+		return transaction -> transaction.getClass().getSimpleName() + " " + transaction.amount().toString();
 	}
 }

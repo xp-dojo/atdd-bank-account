@@ -4,16 +4,15 @@ public abstract class Transaction {
 
 	private final Money amount;
 
-	public Transaction(Money amount) {
+	Transaction(Money amount) {
 		this.amount = amount;
 	}
 
 	abstract Transaction against(Transaction other);
 
-	public Money getAmount() {
+	public Money amount() {
 		return amount;
-	};
-
+	}
 
 	public static class Deposit extends Transaction {
 		
@@ -21,20 +20,27 @@ public abstract class Transaction {
 			super(amount);
 		}
 
-		public static Deposit deposit(Money amount) {
+		public static Deposit depositOf(Money amount) {
 			return new Deposit(amount);
+		}
+
+		public static Deposit deposit(Money amount) {
+			return depositOf(amount);
 		}
 
 		public Transaction against(Transaction other) {
 			return new Identity(other.amount.plus(super.amount));
 		}
-
 	}
 
 	public static class Withdraw extends Transaction {
 
-		public static Withdraw withdraw(Money amount) {
+		public static Withdraw withdrawalOf(Money amount) {
 			return new Withdraw(amount);
+		}
+
+		public static Withdraw withdraw(Money amount) {
+			return withdrawalOf(amount);
 		}
 
 		private Withdraw(Money amount) {
@@ -87,7 +93,7 @@ public abstract class Transaction {
 //		this.direction = direction;
 //	}
 //
-//	public Money getAmount() {
+//	public Money amount() {
 //		return amount;
 //	}
 //

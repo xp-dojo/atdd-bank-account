@@ -1,7 +1,6 @@
 package org.xpdojo.bank;
 
 import org.concordion.api.ConcordionResources;
-import org.concordion.api.ExpectedToFail;
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
 
@@ -30,7 +29,7 @@ public class ViewBalanceSlipPrintoutFixture {
 
 	public String printBalanceSlip() throws IOException {
 		Writer writer = new StringWriter();
-		account.generate(new BalanceStatement(account, clock), writer);
+		account.writeStatement(new BalanceStatement(account, clock), writer);
 		return writer.toString();
 	}
 }

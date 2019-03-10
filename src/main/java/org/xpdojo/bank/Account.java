@@ -11,30 +11,31 @@ import static org.xpdojo.bank.Money.*;
 import static org.xpdojo.bank.Result.failure;
 import static org.xpdojo.bank.Result.success;
 import static org.xpdojo.bank.Transaction.*;
-import static org.xpdojo.bank.Transaction.Deposit;
+import static org.xpdojo.bank.Transaction.Deposit.depositOf;
 import static org.xpdojo.bank.Transaction.Withdraw;
+import static org.xpdojo.bank.Transaction.Withdraw.withdrawalOf;
 
 public class Account {
 
     private final List<Transaction> transactions = new ArrayList<>();
-    
+
     public static Account emptyAccount() {
         return accountWithBalance(ZERO);
     }
 
     public Money balance() {
-	 	return transactions.stream().reduce(sum()).orElse(Deposit.deposit(ZERO)).getAmount();
+	 	return transactions().reduce(sum()).orElse(depositOf(ZERO)).amount();
     }
 
 	public void deposit(Money amount) {
-        transactions.add(Deposit.deposit(amount));
+        transactions.add(depositOf(amount));
     }
 
     public Result withdraw(Money amount) {
-        if (balance().isLessThan(amount)) 
+        if (balance().isLessThan(amount))
             return failure();
-        
-        transactions.add(Withdraw.withdraw(amount));
+
+        transactions.add(withdrawalOf(amount));
         return success();
     }
 
@@ -44,17 +45,16 @@ public class Account {
             receiver.deposit(amount);
         }
     }
-    
-    public String generate(Statement statement, Writer writer) throws IOException {
+
+    public String writeStatement(Statement statement, Writer writer) throws IOException {
         statement.writeTo(writer);
         return writer.toString();
     }
-    
-    public Stream<Transaction> stream() {
+
+    Stream<Transaction> transactions() {
     	return transactions.stream();
 	}
 
-    
     private Account(Money balance) {
         deposit(balance);
     }
@@ -64,6 +64,6 @@ public class Account {
     }
 
     private BinaryOperator<Transaction> sum() {
-        return (a, b) -> new Identity(b.against(a).getAmount());
+        return (a, b) -> new Identity(b.against(a).amount());
     }
 }
