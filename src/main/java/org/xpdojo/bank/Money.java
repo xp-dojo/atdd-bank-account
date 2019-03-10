@@ -1,5 +1,6 @@
 package org.xpdojo.bank;
 
+import java.text.DecimalFormat;
 import java.util.Objects;
 
 /**
@@ -34,7 +35,7 @@ public class Money {
 
     @Override
     public String toString() {
-        return Long.toString(amount);
+        return new DecimalFormat("#,###.00").format(amount);
     }
 
     @Override
