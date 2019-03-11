@@ -29,7 +29,8 @@ table {
 }
 th, td {
   border: 1px solid black;
-  padding: 3px;
+  padding: 3px 6px 3px 6px;
+  min-width: 5em;
 }
 td {
   background-color: white;
