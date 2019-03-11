@@ -6,5 +6,5 @@ import org.junit.runner.RunWith;
 
 @RunWith(ConcordionRunner.class)
 @ConcordionResources(value = { "../../../concordion.css" })
-public class IndexFixture {
+public class Index {
 }

@@ -8,5 +8,5 @@ import org.junit.runner.RunWith;
 @RunWith(ConcordionRunner.class)
 @ConcordionResources(value = { "../../../concordion.css" })
 @ExpectedToFail
-public class ViewBalanceSlipForUninitialisedAccountFixture {
+public class ViewBalanceSlipForUninitialisedAccount {
 }

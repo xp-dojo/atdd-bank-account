@@ -20,13 +20,13 @@
     <div>
         <p concordion:execute="setCurrentBalance(#balance)">Jane has an account with us, her balance is <code concordion:set="#balance">1000</code>.</p>
 
-        <p concordion:execute="setCurrentDateTime(#dateTime)">Jane checks her balance at an ATM at <code concordion:set="#dateTime">2019-02-03T10:15:30.00Z</code>. </p>
+        <p concordion:execute="#result = checkCurrentBalance(#dateTime)">Jane checks her balance at an ATM at <code concordion:set="#dateTime">2019-02-03T10:15:30.00Z</code>. </p>
             
         <p>The ATM sends the balance request to us and expects a value back which it will print verbatim.</p>
 
         <p>The ATM printer module should receive the following, which it will then print.</p>
         
-        <pre style="max-width: 18em" concordion:assert-equals="printBalanceSlip()">
+        <pre style="max-width: 18em" concordion:assert-equals="#result.getActualBalanceSlip()">
 -----------------------------
          XP DOJO BANK        
 -----------------------------
@@ -52,7 +52,7 @@ Your current balance is:
 <div class="information">
     <h3>Further information</h3>
     <ul>
-        <li><a href="index.html">Overview</a></li>
+        <li><a href="Index.html">Overview</a></li>
         <li><a href="ViewBalanceSlip.html">Viewing the current balance</a></li>
         <li><a href="ViewBalanceSlipPrintout.html">What does the balance slip actually look like?</a></li>
         <li><a href="ViewBalanceSlipForUninitialisedAccount.html">What if the account hasn't been setup yet?</a></li>

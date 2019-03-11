@@ -10,26 +10,21 @@ import java.io.Writer;
 import java.time.Instant;
 
 import static org.xpdojo.bank.Account.accountWithBalance;
+import static org.xpdojo.bank.Money.*;
 import static org.xpdojo.bank.Money.amountOf;
 
 @RunWith(ConcordionRunner.class)
 @ConcordionResources(value = {"../../../concordion.css"})
-public class ViewBalanceSlipPrintoutFixture {
+public class ViewBalanceSlipPrintout {
 	
-	private Account account;
-	private Clock clock;
+	private Account account = accountWithBalance(ZERO);
 
 	public void setCurrentBalance(long balance) {
 		account = accountWithBalance(amountOf(balance));
 	}
 
-	public void setCurrentDateTime(String isoUtcDateTime) {
-		clock = () -> Instant.parse(isoUtcDateTime);
+	public BalanceStatementFixture checkCurrentBalance(String isoUtcDateTime) throws IOException {
+		return new BalanceStatementFixture(account, isoUtcDateTime);
 	}
 
-	public String printBalanceSlip() throws IOException {
-		Writer writer = new StringWriter();
-		account.writeStatement(new BalanceStatement(account, clock), writer);
-		return writer.toString();
-	}
 }
