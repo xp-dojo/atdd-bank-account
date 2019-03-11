@@ -8,5 +8,5 @@ import org.junit.runner.RunWith;
 @RunWith(ConcordionRunner.class)
 @ConcordionResources(value = {"../../../concordion.css"})
 @Unimplemented
-public class ViewStatement {
+public class ViewStatementWithRunningBalance {
 }
