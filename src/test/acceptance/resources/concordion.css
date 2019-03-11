@@ -105,3 +105,10 @@ li {
 .footer .testTime {
   padding: 2px 0 0 0;
 }
+
+.skeuomorphic {
+    border: 1px solid lightgray;
+    -webkit-box-shadow: 2px 2px 25px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2px 2px 25px 0px rgba(0,0,0,0.75);
+    box-shadow: 2px 2px 25px 0px rgba(0,0,0,0.75);
+}
