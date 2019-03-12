@@ -65,4 +65,5 @@ The steps above are *iterative*:  you're meant to go through them more than once
 
 # Additional Reading
 
+[Concordion documentation](https://concordion.org/discussing/java/html/)
 [Problems with Acceptance Testing](http://www.softwaretestingmagazine.com/knowledge/problems-acceptance-testing-can-cause/)
