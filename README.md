@@ -19,6 +19,10 @@ You will need Java and an IDE.
 
 1. Open the project from IntelliJ IDEA (community edition is fine). 
 
+1. Make sure you can run the *unit* tests (make a change and see one or more tests fail).
+
+1. Make sure you can run the *acceptance* tests. Hint: run the `Index.java` just like an ordinary test.
+
 
 # Instructions
 
