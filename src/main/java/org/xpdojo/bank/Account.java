@@ -2,40 +2,32 @@ package org.xpdojo.bank;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.BinaryOperator;
-import java.util.stream.Stream;
 
-import static org.xpdojo.bank.Money.*;
+import static org.xpdojo.bank.Money.ZERO;
 import static org.xpdojo.bank.Result.failure;
 import static org.xpdojo.bank.Result.success;
-import static org.xpdojo.bank.Transaction.*;
-import static org.xpdojo.bank.Transaction.Deposit.depositOf;
-import static org.xpdojo.bank.Transaction.Withdraw;
-import static org.xpdojo.bank.Transaction.Withdraw.withdrawalOf;
 
 public class Account {
 
-    private final List<Transaction> transactions = new ArrayList<>();
+    private Money balance;
 
     public static Account emptyAccount() {
         return accountWithBalance(ZERO);
     }
 
     public Money balance() {
-	 	return transactions().reduce(sum()).orElse(depositOf(ZERO)).amount();
+	 	return balance;
     }
 
 	public void deposit(Money amount) {
-        transactions.add(depositOf(amount));
+        balance = balance.plus(amount);
     }
 
     public Result withdraw(Money amount) {
         if (balance().isLessThan(amount))
             return failure();
 
-        transactions.add(withdrawalOf(amount));
+        balance = balance.minus(amount);
         return success();
     }
 
@@ -51,19 +43,13 @@ public class Account {
         return writer.toString();
     }
 
-    Stream<Transaction> transactions() {
-    	return transactions.stream();
-	}
-
+    
     private Account(Money balance) {
-        deposit(balance);
+        this.balance = balance;
     }
 
     static Account accountWithBalance(Money balance) {
         return new Account(balance);
     }
 
-    private BinaryOperator<Transaction> sum() {
-        return (a, b) -> new Identity(b.against(a).amount());
-    }
 }
