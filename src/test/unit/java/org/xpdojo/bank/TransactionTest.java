@@ -15,6 +15,7 @@ import static org.xpdojo.bank.Money.amountOf;
 import static org.xpdojo.bank.Transaction.Deposit;
 import static org.xpdojo.bank.Transaction.Deposit.deposit;
 import static org.xpdojo.bank.Transaction.Deposit.depositOf;
+import static org.xpdojo.bank.Transaction.Tally.tally;
 import static org.xpdojo.bank.Transaction.Withdraw.withdraw;
 
 class TransactionTest {
@@ -73,9 +74,23 @@ class TransactionTest {
 		List<Transaction> transactions = asList(
 			deposit(amountOf(10)),
 			deposit(amountOf(20)),
-			withdraw(amountOf(5))
+			withdraw(amountOf(5)),
+			withdraw(amountOf(5)),
+			deposit(amountOf(3))
 		);
 		Optional<Transaction> reduce = transactions.stream().reduce((a, b) -> b.against(a));
-		assertThat(reduce.get().amount(), is(amountOf(25)));
+		assertThat(reduce.get().amount(), is(amountOf(23)));
+	}
+	
+	@Test
+	void tallyingTransactionCanNotBeMadeAgainstOthers() {
+		assertThat(tally(amountOf(100)).against(withdraw(amountOf(50))).amount(), is(amountOf(100)));
+		assertThat(tally(amountOf(100)).against(deposit(amountOf(50))).amount(), is(amountOf(100)));
+	}
+	
+	@Test
+	void tallyingTransactionCanStillBeAppliedToAnother() {
+		assertThat(withdraw(amountOf(50)).against(tally(amountOf(100))).amount(), is(amountOf(50)));
+		assertThat(deposit(amountOf(50)).against(tally(amountOf(100))).amount(), is(amountOf(150)));
 	}
 }

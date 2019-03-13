@@ -29,7 +29,7 @@ public abstract class Transaction {
 		}
 
 		public Transaction against(Transaction other) {
-			return new Identity(other.amount.plus(super.amount));
+			return Tally.tally(other.amount.plus(super.amount));
 		}
 	}
 
@@ -48,14 +48,18 @@ public abstract class Transaction {
 		}
 
 		public Transaction against(Transaction other) {
-			return new Identity(other.amount.minus(super.amount));
+			return Tally.tally(other.amount.minus(super.amount));
 		}
 	}
 
-	public static class Identity extends Transaction {
+	public static class Tally extends Transaction {
 
-		public Identity(Money amount) {
+		private Tally(Money amount) {
 			super(amount);
+		}
+
+		public static Tally tally(Money amount) {
+			return new Tally(amount);
 		}
 
 		@Override

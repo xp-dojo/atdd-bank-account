@@ -11,7 +11,7 @@ import static org.xpdojo.bank.Money.ZERO;
 import static org.xpdojo.bank.Result.failure;
 import static org.xpdojo.bank.Result.success;
 import static org.xpdojo.bank.Transaction.Deposit.depositOf;
-import static org.xpdojo.bank.Transaction.Identity;
+import static org.xpdojo.bank.Transaction.Tally;
 import static org.xpdojo.bank.Transaction.Withdraw.withdrawalOf;
 
 public class Account {
@@ -63,6 +63,6 @@ public class Account {
     }
 
     private BinaryOperator<Transaction> sum() {
-        return (a, b) -> new Identity(b.against(a).amount());
+        return (a, b) -> Tally.tally(b.against(a).amount());
     }
 }
