@@ -5,7 +5,8 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.io.StringWriter;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.xpdojo.bank.Account.accountWithBalance;
 import static org.xpdojo.bank.Account.emptyAccount;
 import static org.xpdojo.bank.Money.ZERO;
@@ -16,35 +17,35 @@ class AccountTest {
 	@Test
 	void newAccountShouldHaveZeroBalance() {
 		Account account = emptyAccount();
-		assertThat(account.balance()).isEqualTo(ZERO);
+		assertThat(account.balance(), is(ZERO));
 	}
 
 	@Test
 	void depositToEmptyAccountShouldIncreaseTheBalance() {
 		Account account = emptyAccount();
 		account.deposit(amountOf(10));
-		assertThat(account.balance()).isEqualTo(amountOf(10));
+		assertThat(account.balance(), is(amountOf(10)));
 	}
 
 	@Test
 	void depositToNonEmptyAccountShouldIncreaseTheBalance() {
 		Account account = accountWithBalance(amountOf(10));
 		account.deposit(amountOf(20));
-		assertThat(account.balance()).isEqualTo(amountOf(30));
+		assertThat(account.balance(), is(amountOf(30)));
 	}
 
 	@Test
 	void withdrawalShouldDecreaseTheBalance() {
 		Account account = accountWithBalance(amountOf(10));
 		account.withdraw(amountOf(10));
-		assertThat(account.balance()).isEqualTo(ZERO);
+		assertThat(account.balance(), is(ZERO));
 	}
 
 	@Test
 	void withdrawalShouldNotBeAppliedWhenItTakesAccountOverdrawn() {
 		Account account = emptyAccount();
 		account.withdraw(amountOf(1));
-		assertThat(account.balance()).isEqualTo(ZERO);
+		assertThat(account.balance(), is(ZERO));
 	}
 
 	@Test
@@ -54,8 +55,8 @@ class AccountTest {
 
 		sender.transfer(amountOf(10), receiver);
 
-		assertThat(sender.balance()).isEqualTo(ZERO);
-		assertThat(receiver.balance()).isEqualTo(amountOf(10));
+		assertThat(sender.balance(), is(ZERO));
+		assertThat(receiver.balance(), is(amountOf(10)));
 	}
 
 	@Test
@@ -65,14 +66,14 @@ class AccountTest {
 
 		sender.transfer(amountOf(1), receiver);
 
-		assertThat(sender.balance()).isEqualTo(ZERO);
-		assertThat(receiver.balance()).isEqualTo(ZERO);
+		assertThat(sender.balance(), is(ZERO));
+		assertThat(receiver.balance(), is(ZERO));
 	}
 
 	@Test
 	void statementShouldBeWrittenToSuppliedWriter() throws IOException {
 		Account account = emptyAccount();
 		Statement statement = writer -> writer.append("STATEMENT GENERATED");
-		assertThat(account.writeStatement(statement, new StringWriter())).isEqualTo("STATEMENT GENERATED");
+		assertThat(account.writeStatement(statement, new StringWriter()), is("STATEMENT GENERATED"));
 	}
 }
