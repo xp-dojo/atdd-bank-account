@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bank Statements</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../../concordion.css" rel="stylesheet" type="text/css"/>
+</head>
+
+<body>
+
+<h1>Bank Statements</h1>
+
+<div class="example">
+    <h3>Example</h3>
+    <div>
+        <p>The following transactions have taken place against an account (with a starting balance of zero).</p>
+
+        <table>
+            <tr>
+                <th>Date / Time</th>
+                <th>Type</th>
+                <th>Amount</th>
+            </tr>
+            <tr>
+                <td>13 Feb 2019 10:34</td>
+                <td>CREDIT</td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <td>15 Feb 2019 08:12</td>
+                <td>CREDIT</td>
+                <td>125</td>
+            </tr>
+            <tr>
+                <td>16 Feb 2019 23:04</td>
+                <td>WITHDRAW</td>
+                <td>35</td>
+            </tr>
+        </table>
+        
+        <p>When a full statement is requested, a running balance should be shown against each line of the statement (the starting balance should be <span>zero</span>):</p>
+
+        <table>
+            <tr>
+                <th>Date / Time</th>
+                <th>Type</th>
+                <th>Amount</th>
+                <th>Balance</th>
+            </tr>
+            <tr>
+                <td>13 Feb 2019 10:34</td>
+                <td>CREDIT</td>
+                <td>100</td>
+                <td class="success">100</td>
+            </tr>
+            <tr>
+                <td>15 Feb 2019 08:12</td>
+                <td>CREDIT</td>
+                <td>125</td>
+                <td class="success">225</td>
+            </tr>
+            <tr>
+                <td>16 Feb 2019 23:04</td>
+                <td>WITHDRAW</td>
+                <td>35</td>
+                <td class="success">190</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="information">
+    <h3>Further information</h3>
+    <ul>
+        <li><a href="Index.html">Overview</a></li>
+        <li><a href="ViewBalanceSlip.html">Viewing the current balance</a></li>
+        <li><a href="ViewBalanceSlipPrintout.html">What does the balance slip actually look like?</a></li>
+        <li><a href="ViewBalanceSlipForUninitialisedAccount.html">What if the account hasn't been setup yet?</a></li>
+        <li><a href="ViewStatement.html">What about a full statement?</a></li>
+        <li><a href="ViewStatementWithRunningBalance.html">Does a statement show a running balance?</a></li>
+        <li><a href="ViewFullStatement.html">What does a full statement actually look like?</a></li>
+    </ul>
+</div>
+
+</body>
+</html>
