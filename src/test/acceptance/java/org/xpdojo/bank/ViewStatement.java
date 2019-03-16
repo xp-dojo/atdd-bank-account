@@ -18,12 +18,60 @@
 package org.xpdojo.bank;
 
 import org.concordion.api.ConcordionResources;
-import org.concordion.api.Unimplemented;
+import org.concordion.api.ExpectedToFail;
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
 
+import java.io.IOException;
+import java.io.StringWriter;
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.xpdojo.bank.Money.amountOf;
+
 @RunWith(ConcordionRunner.class)
 @ConcordionResources(value = {"../../../concordion.css"})
-@Unimplemented
+@ExpectedToFail
 public class ViewStatement {
+
+	private final Account account = Account.emptyAccount();
+	private final List<Transaction> executed = new ArrayList<>();
+
+	public void transaction(String dateTime, String direction, String amount) {
+		executed.add(new Transaction(direction, amount));
+		if (direction.equals("CREDIT"))
+			account.deposit(amountOf(Long.parseLong(amount)));
+		else if (direction.equals("WITHDRAW"))
+			account.withdraw(amountOf(Long.parseLong(amount)));
+		else
+			throw new RuntimeException(direction + " not recognised");
+
+	}
+
+	public String statementIncludes(List<Transaction> transactions) throws IOException {
+		String statement = account.writeStatement(new FullStatement(), new StringWriter());
+		if (statement.contains(transactions.get(0).getAmount()))
+			return "includes all transactions";
+		else
+			return "doesn't match all transactions";
+	}
+
+	static class Transaction {
+
+		private final String direction;
+		private final String amount;
+
+		public Transaction(String direction, String amount) {
+			this.direction = direction;
+			this.amount = amount;
+		}
+
+		public String getDirection() {
+			return direction;
+		}
+
+		public String getAmount() {
+			return amount;
+		}
+	}
 }

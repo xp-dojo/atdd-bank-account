@@ -90,6 +90,7 @@ class AccountTest {
 	@Test
 	void statementShouldBeWrittenToSuppliedWriter() throws IOException {
 		Statement statement = (account, writer) -> writer.append("STATEMENT GENERATED ").append(account.balance().toString());
-		assertThat(accountWithBalance(amountOf(2314)).writeStatement(statement, new StringWriter()), is("STATEMENT GENERATED 2,314.00"));
+		String actual = accountWithBalance(amountOf(2123)).writeStatement(statement, new StringWriter());
+		assertThat(actual, is("STATEMENT GENERATED 2,123.00"));
 	}
 }

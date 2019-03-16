@@ -15,8 +15,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
-<html>
+<html xmlns:concordion="http://www.concordion.org/2007/concordion">
 <head>
     <title>Bank Statements</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -30,13 +29,13 @@
 <div class="example">
     <h3>Example</h3>
     <div>
-        <p>The following transactions have taken place against an account (with a starting balance of zero).</p>
+        <p concordion:="">The following transactions have taken place against an account (with a starting balance of zero).</p>
 
-        <table>
+        <table concordion:execute="#transactions = transaction(#dateTime, #direction, #amount)">
             <tr>
-                <th>Date / Time</th>
-                <th>Type</th>
-                <th>Amount</th>
+                <th concordion:set="#dateTime">Date / Time</th>
+                <th concordion:set="#direction">Type</th>
+                <th concordion:set="#amount">Amount</th>
             </tr>
             <tr>
                 <td>13 Feb 2019 10:34</td>
@@ -55,7 +54,7 @@
             </tr>
         </table>
         
-        <p>When a full statement is requested, the statement <span>includes all transactions</span> and <span>shows the current balance</span> (the sum of all transactions applied to the starting balance).</p>
+        <p>When a full statement is requested, the statement <span concordion:assert-equals="statementIncludes(#transactions)">includes all transactions</span> and <span>shows the current balance</span> (the sum of all transactions applied to the starting balance).</p>
     </div>
 </div>
 
