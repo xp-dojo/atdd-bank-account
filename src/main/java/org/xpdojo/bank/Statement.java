@@ -5,5 +5,5 @@ import java.io.Writer;
 
 interface Statement {
 
-	void writeTo(Writer writer) throws IOException;
+	void write(Account account, Writer writer) throws IOException;
 }

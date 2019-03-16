@@ -5,25 +5,20 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.text.DecimalFormat;
 import java.time.Instant;
-import java.time.format.DateTimeFormatter;
 
 import static java.time.Instant.parse;
 import static java.time.LocalDateTime.ofInstant;
-import static java.time.ZoneId.systemDefault;
 import static java.time.ZoneOffset.UTC;
-import static java.time.format.DateTimeFormatter.ofLocalizedDateTime;
 import static java.time.format.DateTimeFormatter.ofPattern;
-import static java.time.format.FormatStyle.SHORT;
-import static java.util.Locale.UK;
 
 class BalanceStatementFixture {
 
 	private final String balanceSlip;
 
 	public BalanceStatementFixture(Account account, String isoUtcDateTime) throws IOException {
-		BalanceStatement statementOfAccount = new BalanceStatement(account, () -> parse(isoUtcDateTime));
+		BalanceStatement statementOfAccount = new BalanceStatement(() -> parse(isoUtcDateTime));
 		Writer writer = new StringWriter();
-		statementOfAccount.writeTo(writer);
+		statementOfAccount.write(account, writer);
 		balanceSlip = writer.toString();
 	}
 

@@ -18,17 +18,19 @@ class BalanceStatementTest {
 
 	@Test
 	void aBalanceStatementShouldIncludeTheAccountsBalance() throws IOException {
-		BalanceStatement statement = new BalanceStatement(accountWithBalance(amountOf(250)), () -> Instant.ofEpochMilli(0));
-		String writtenStatement = writeBalanceStatement(statement);
+		Account account = accountWithBalance(amountOf(250));
+		BalanceStatement statement = new BalanceStatement(() -> Instant.ofEpochMilli(0));
+		String writtenStatement = writeBalanceStatement(account, statement);
 		assertThat(writtenStatement, containsString("250"));
 	}
 
 	@Test
 	void aBalanceStatementShouldIncludeTheCurrentDateNicelyFormatted() throws IOException {
 		Clock now = () -> Instant.parse("2019-02-03T10:15:30Z");
-		BalanceStatement statement = new BalanceStatement(accountWithBalance(ZERO), now);
+		Account account = accountWithBalance(ZERO);
+		BalanceStatement statement = new BalanceStatement(now);
 
-		String writtenStatement = writeBalanceStatement(statement);
+		String writtenStatement = writeBalanceStatement(account, statement);
 
 		assertThat(writtenStatement, containsString("03/02/19"));
 		assertThat(writtenStatement, containsString("10:15"));
@@ -39,9 +41,10 @@ class BalanceStatementTest {
 	* More literal, full text like comparisons are done in the acceptance tests layer */
 	void aBalanceStatementShouldIncludePreambleAndAdditionalText() throws IOException {
 		Clock now = () -> Instant.parse("2019-02-03T10:15:30Z");
-		BalanceStatement statement = new BalanceStatement(accountWithBalance(amountOf(1000)), now);
+		Account account = accountWithBalance(amountOf(1000));
+		BalanceStatement statement = new BalanceStatement(now);
 
-		String writtenStatement = writeBalanceStatement(statement);
+		String writtenStatement = writeBalanceStatement(account, statement);
 
 		assertThat(writtenStatement, containsString("XP DOJO BANK"));
 		assertThat(writtenStatement, containsString("Terminal #            1003423"));
@@ -54,17 +57,18 @@ class BalanceStatementTest {
 		assertThat(writtenStatement, containsString("visit https://xpdojo.org"));
 	}
 
-	private String writeBalanceStatement(BalanceStatement statement) throws IOException {
+	private String writeBalanceStatement(Account account, BalanceStatement statement) throws IOException {
 		Writer writer = new StringWriter();
-		statement.writeTo(writer);
+		statement.write(account, writer);
 		return writer.toString();
 	}
 
 	@Test
 	void exceptionsShouldBePropagatedFromTheWriter() {
 		Writer erroringWriter = new ErroringWriter();
-		BalanceStatement statement = new BalanceStatement(accountWithBalance(ZERO), () -> Instant.ofEpochMilli(0));
-		assertThrows(IOException.class, () -> statement.writeTo(erroringWriter));
+		Account account = accountWithBalance(ZERO);
+		BalanceStatement statement = new BalanceStatement(() -> Instant.ofEpochMilli(0));
+		assertThrows(IOException.class, () -> statement.write(account, erroringWriter));
 	}
 
 	private static class ErroringWriter extends Writer {

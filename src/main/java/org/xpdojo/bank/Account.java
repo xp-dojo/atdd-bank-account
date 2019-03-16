@@ -46,7 +46,7 @@ public class Account {
     }
 
     public String writeStatement(Statement statement, Writer writer) throws IOException {
-        statement.writeTo(writer);
+        statement.write(this, writer);
         return writer.toString();
     }
 

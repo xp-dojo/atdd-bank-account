@@ -10,14 +10,8 @@ public class FullStatement implements Statement {
 
 	private static final String NEW_LINE = System.getProperty("line.separator");
 	
-	private final Account account;
-
-	public FullStatement(Account account) {
-		this.account = account;
-	}
-
 	@Override
-	public void writeTo(Writer writer) throws IOException {
+	public void write(Account account, Writer writer) throws IOException {
 		writer.append(account.transactions().map(toStatementLine()).collect(joining(NEW_LINE)));
 	}
 

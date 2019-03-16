@@ -13,19 +13,17 @@ public class BalanceStatement implements Statement {
 	private static final int MAX_WIDTH = 30;
     private static final String NEW_LINE = System.getProperty("line.separator");
 
-    private final Account account;
     private final Clock clock;
 
-	public BalanceStatement(Account account, Clock clock) {
-		this.account = account;
+	public BalanceStatement(Clock clock) {
 		this.clock = clock;
 	}
 
 	@Override
-	public void writeTo(Writer writer) throws IOException  {
+	public void write(Account account, Writer writer) throws IOException  {
 		writer.append(header());
 		writer.append(preamble(clock.now()));
-		writer.append(balance());
+		writer.append(balance(account));
 		writer.append(NEW_LINE);
 		writer.append(footer());
 	}
@@ -52,7 +50,7 @@ public class BalanceStatement implements Statement {
 		return ofPattern("HH:mm").format(ofInstant(instant, UTC));
 	}
 	
-	private String balance() {
+	private String balance(Account account) {
 		String balance = account.balance().toString();
 		return "Your current balance is:     " + NEW_LINE + NEW_LINE + padLeft(balance, MAX_WIDTH - 1) + NEW_LINE;
 	}

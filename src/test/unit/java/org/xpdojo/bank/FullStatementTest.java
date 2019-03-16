@@ -22,9 +22,9 @@ class FullStatementTest {
 		account.deposit(amountOf(20));
 		account.withdraw(amountOf(15));
 
-		FullStatement statement = new FullStatement(account);
+		FullStatement statement = new FullStatement();
 		Writer writer = new StringWriter();
-		statement.writeTo(writer);
+		statement.write(account, writer);
 
 		String expected =
 			"Deposit .00"   + NEW_LINE +
