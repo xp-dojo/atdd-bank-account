@@ -22,54 +22,21 @@ import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
 
 import java.io.IOException;
-import java.io.StringWriter;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Function;
 
-import static java.util.stream.Collectors.toList;
-import static org.xpdojo.bank.Money.amountOf;
+import static org.xpdojo.bank.Account.emptyAccount;
 
 @RunWith(ConcordionRunner.class)
 @ConcordionResources(value = {"../../../concordion.css"})
 public class ViewStatement {
 
-	private final Account account = Account.emptyAccount();
-	private final List<Transaction> executed = new ArrayList<>();
-
-	public List<Transaction> transaction(String dateTime, String direction, String amount) {
-		executed.add(new Transaction(direction, amount));
-		if (direction.equals("Deposit"))
-			account.deposit(amountOf(Long.parseLong(amount)));
-		else if (direction.equals("Withdraw"))
-			account.withdraw(amountOf(Long.parseLong(amount)));
-		else
-			throw new RuntimeException(direction + " not recognised");
-		return executed;
+	private final FullStatementFixture fixture = new FullStatementFixture(emptyAccount());
+	
+	public List<FullStatementFixture.Transaction> addTransaction(String dateTime, String direction, String amount) {
+		return fixture.addTransaction(dateTime, direction, amount);
 	}
 
-	public String statementIncludes(List<Transaction> transactions) throws IOException {
-		String statement = account.writeStatement(new FullStatement(), new StringWriter());
-		List<Boolean> found = transactions.stream().map(transactionFound(statement)).collect(toList());
-
-		if (found.contains(false))
-			return "doesn't include all transactions";
-		else
-			return "includes all transactions";
-	}
-
-	private Function<Transaction, Boolean> transactionFound(String line) {
-		return transaction -> line.contains(transaction.direction + " " + transaction.amount);
-	}
-
-	static class Transaction {
-
-		private final String direction;
-		private final String amount;
-
-		public Transaction(String direction, String amount) {
-			this.direction = direction;
-			this.amount = amount;
-		}
+	public String statementIncludes(List<FullStatementFixture.Transaction> transactions) throws IOException {
+		return fixture.statementIncludes(transactions);
 	}
 }

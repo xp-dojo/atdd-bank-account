@@ -26,12 +26,15 @@
 
 <h1>Bank Statements</h1>
 
+<p>A <a href="ViewBalanceSlip.html">balance slip</a> shows just the current balance but our customer's would like to see the transactions that have taken place against their account.</p>
+
 <div class="example">
+
     <h3>Example</h3>
     <div>
         <p concordion:="">The following transactions have taken place against an account (with a starting balance of zero).</p>
 
-        <table concordion:execute="#transactions = transaction(#dateTime, #direction, #amount)">
+        <table concordion:execute="#transactions = addTransaction(#dateTime, #direction, #amount)">
             <tr>
                 <th concordion:set="#dateTime">Date / Time</th>
                 <th concordion:set="#direction">Type</th>
