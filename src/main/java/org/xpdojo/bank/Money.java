@@ -26,6 +26,12 @@ import java.util.Objects;
  */
 public class Money {
 
+    private long amount;
+
+    private Money(long amount) {
+        this.amount = amount;
+    }
+
     public static final Money ZERO = amountOf(0);
 
     public static Money amountOf(long amount) {
@@ -43,13 +49,7 @@ public class Money {
     public boolean isLessThan(Money other) {
         return this.amount < other.amount;
     }
-
-    private long amount;
-
-    private Money(long amount) {
-        this.amount = amount;
-    }
-
+    
     @Override
     public String toString() {
         return new DecimalFormat("#,###.00").format(amount);

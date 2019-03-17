@@ -21,14 +21,12 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.BinaryOperator;
 import java.util.stream.Stream;
 
 import static org.xpdojo.bank.Money.ZERO;
 import static org.xpdojo.bank.Result.failure;
 import static org.xpdojo.bank.Result.success;
 import static org.xpdojo.bank.Transaction.Deposit.depositOf;
-import static org.xpdojo.bank.Transaction.Tally;
 import static org.xpdojo.bank.Transaction.Withdraw.withdrawalOf;
 
 public class Account {
@@ -40,7 +38,7 @@ public class Account {
     }
 
     public Money balance() {
-	 	return transactions().reduce(sum()).orElse(depositOf(ZERO)).amount();
+        return transactions().reduce(ZERO, (money, transaction) -> transaction.against(money), Money::plus);
     }
 
 	public void deposit(Money amount) {
@@ -77,9 +75,5 @@ public class Account {
 
     static Account accountWithBalance(Money balance) {
         return new Account(balance);
-    }
-
-    private BinaryOperator<Transaction> sum() {
-        return (a, b) -> Tally.tally(b.against(a).amount());
     }
 }

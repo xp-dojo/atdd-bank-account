@@ -21,18 +21,18 @@ public abstract class Transaction {
 
 	private final Money amount;
 
-	Transaction(Money amount) {
+	private Transaction(Money amount) {
 		this.amount = amount;
 	}
-
-	abstract Transaction against(Transaction other);
 
 	public Money amount() {
 		return amount;
 	}
+	
+	public abstract Money against(Money money);
 
 	public static class Deposit extends Transaction {
-		
+
 		private Deposit(Money amount) {
 			super(amount);
 		}
@@ -45,8 +45,9 @@ public abstract class Transaction {
 			return depositOf(amount);
 		}
 
-		public Transaction against(Transaction other) {
-			return Tally.tally(other.amount.plus(super.amount));
+		@Override
+		public Money against(Money other) {
+			return other.plus(this.amount());
 		}
 	}
 
@@ -64,24 +65,9 @@ public abstract class Transaction {
 			super(amount);
 		}
 
-		public Transaction against(Transaction other) {
-			return Tally.tally(other.amount.minus(super.amount));
-		}
-	}
-
-	public static class Tally extends Transaction {
-
-		private Tally(Money amount) {
-			super(amount);
-		}
-
-		public static Tally tally(Money amount) {
-			return new Tally(amount);
-		}
-
 		@Override
-		Transaction against(Transaction other) {
-			return this;
+		public Money against(Money other) {
+			return other.minus(this.amount());
 		}
 	}
 }
