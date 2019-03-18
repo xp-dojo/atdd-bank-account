@@ -33,7 +33,10 @@ public class FullStatement implements Statement {
 	
 	@Override
 	public void write(Account account, Writer writer) throws IOException {
-		writer.append(account.transactions().map(toStatementLine()).collect(joining(NEW_LINE)));
+		writer
+			.append(account.transactions().map(toStatementLine()).collect(joining(NEW_LINE)))
+			.append("\nbalance: ")
+			.append(account.balance().toString());
 	}
 
 	private Function<Transaction, String> toStatementLine() {

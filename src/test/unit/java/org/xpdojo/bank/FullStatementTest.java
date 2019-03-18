@@ -24,8 +24,8 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.time.Instant;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.xpdojo.bank.Account.emptyAccount;
 import static org.xpdojo.bank.Money.amountOf;
 
@@ -49,7 +49,21 @@ class FullStatementTest {
 			"23/02/2019 11:15 Deposit 10.00" + NEW_LINE +
 			"23/02/2019 12:15 Deposit 20.00" + NEW_LINE +
 			"23/02/2019 13:15 Withdraw 15.00";
-		assertThat(writer.toString(), is(expected));
+		assertThat(writer.toString(), containsString(expected));
+	}
+	
+	@Test
+	void aFullStatementShouldIncludeTheBalance() throws IOException {
+		Account account = emptyAccount(new IncrementingClock(Instant.parse("2019-02-23T10:15:00Z")));
+		account.deposit(amountOf(10));
+		account.deposit(amountOf(20));
+		account.withdraw(amountOf(14));
+
+		FullStatement statement = new FullStatement();
+		Writer writer = new StringWriter();
+		statement.write(account, writer);
+
+		assertThat(writer.toString(), containsString("balance: " + amountOf(16).toString()));
 	}
 	
 	static class IncrementingClock implements Clock {

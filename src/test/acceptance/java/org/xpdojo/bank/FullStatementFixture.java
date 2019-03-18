@@ -32,7 +32,7 @@ import static org.xpdojo.bank.Account.emptyAccount;
 import static org.xpdojo.bank.Money.amountOf;
 
 public class FullStatementFixture {
-	
+
 	private final List<Transaction> executed = new ArrayList<>();
 
 	public List<Transaction> addTransaction(Instant dateTime, String direction, String amount) {
@@ -42,7 +42,7 @@ public class FullStatementFixture {
 
 	public Account applyTransactionsToAccount(List<Transaction> transactions) {
 		Account account = emptyAccount(new TickingClock(timesOf(transactions)));
-		
+
 		transactions.forEach(transaction -> {
 			if (transaction.direction.equals("Deposit"))
 				account.deposit(amountOf(Long.parseLong(transaction.amount)));
@@ -55,13 +55,20 @@ public class FullStatementFixture {
 	}
 
 	public String statementIncludes(List<Transaction> transactions, Account account) throws IOException {
-		String statement = account.writeStatement(new FullStatement(), new StringWriter());
+		String statement = getActualStatement(account);
 		List<Boolean> found = transactions.stream().map(isTransactionFoundIn(statement)).collect(toList());
 
 		if (found.contains(false))
 			return "doesn't include all transaction details";
 		else
 			return "includes all transactions";
+	}
+
+	public String statementIncludesBalance(Account account) throws IOException {
+		String statement = getActualStatement(account);
+		if (statement.contains(account.balance().toString()))
+			return "shows the current balance";
+		return "does not include the current balance";
 	}
 
 	public String getActualStatement(Account account) throws IOException {
@@ -97,7 +104,7 @@ public class FullStatementFixture {
 
 		private final List<Instant> instants;
 		private int index = 0;
-		
+
 		TickingClock(List<Instant> instants) {
 			this.instants = instants;
 			this.instants.add(0, Instant.now()); // to take care of the initial deposit on account creation

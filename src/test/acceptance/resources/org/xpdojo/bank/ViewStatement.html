@@ -57,7 +57,7 @@
             </tr>
         </table>
         
-        <p>When a full <span concordion:execute="#account = applyTransactionsToAccount(#transactions)">statement is requested</span>, the statement <span concordion:assert-equals="statementIncludes(#transactions, #account)">includes all transactions</span> and <span>shows the current balance</span> (the sum of all transactions applied to the starting balance).</p>
+        <p>When a full <span concordion:execute="#account = applyTransactionsToAccount(#transactions)">statement is requested</span>, the statement <span concordion:assert-equals="statementIncludes(#transactions, #account)">includes all transactions</span> and <span concordion:assert-equals="includesBalance(#account)">shows the current balance</span> (the sum of all transactions applied to the starting balance).</p>
 
         <pre style="max-width: 50em" class="skeuomorphic" concordion:echo="getActualStatement(#account)"></pre>
 

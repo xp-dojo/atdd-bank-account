@@ -43,7 +43,11 @@ public class ViewStatement {
 	public String statementIncludes(List<FullStatementFixture.Transaction> transactions, Account account) throws IOException {
 		return fixture.statementIncludes(transactions, account);
 	}
-	
+
+	public String includesBalance(Account account) throws IOException {
+		return fixture.statementIncludesBalance(account);
+	}
+
 	public String getActualStatement(Account account) throws IOException {
 		return fixture.getActualStatement(account);
 	}
