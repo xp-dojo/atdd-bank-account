@@ -35,8 +35,8 @@ class BalanceStatementTest {
 
 	@Test
 	void aBalanceStatementShouldIncludeTheAccountsBalance() throws IOException {
-		Account account = accountWithBalance(amountOf(250));
-		BalanceStatement statement = new BalanceStatement(() -> Instant.ofEpochMilli(0));
+		Account account = accountWithBalance(amountOf(250), Instant::now);
+		BalanceStatement statement = new BalanceStatement(Instant::now);
 		String writtenStatement = writeBalanceStatement(account, statement);
 		assertThat(writtenStatement, containsString("250"));
 	}
@@ -44,7 +44,7 @@ class BalanceStatementTest {
 	@Test
 	void aBalanceStatementShouldIncludeTheCurrentDateNicelyFormatted() throws IOException {
 		Clock now = () -> Instant.parse("2019-02-03T10:15:30Z");
-		Account account = accountWithBalance(ZERO);
+		Account account = accountWithBalance(ZERO, Instant::now);
 		BalanceStatement statement = new BalanceStatement(now);
 
 		String writtenStatement = writeBalanceStatement(account, statement);
@@ -57,8 +57,8 @@ class BalanceStatementTest {
 	/* NB this is intentionally loose to assert against the main elements of a balance slip. 
 	* More literal, full text like comparisons are done in the acceptance tests layer */
 	void aBalanceStatementShouldIncludePreambleAndAdditionalText() throws IOException {
+		Account account = accountWithBalance(amountOf(1000), Instant::now);
 		Clock now = () -> Instant.parse("2019-02-03T10:15:30Z");
-		Account account = accountWithBalance(amountOf(1000));
 		BalanceStatement statement = new BalanceStatement(now);
 
 		String writtenStatement = writeBalanceStatement(account, statement);
@@ -83,8 +83,8 @@ class BalanceStatementTest {
 	@Test
 	void exceptionsShouldBePropagatedFromTheWriter() {
 		Writer erroringWriter = new ErroringWriter();
-		Account account = accountWithBalance(ZERO);
-		BalanceStatement statement = new BalanceStatement(() -> Instant.ofEpochMilli(0));
+		Account account = accountWithBalance(ZERO, Instant::now);
+		BalanceStatement statement = new BalanceStatement(Instant::now);
 		assertThrows(IOException.class, () -> statement.write(account, erroringWriter));
 	}
 

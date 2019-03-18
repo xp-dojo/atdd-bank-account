@@ -17,57 +17,84 @@
 
 package org.xpdojo.bank;
 
+import java.time.Instant;
+import java.util.Objects;
+
 public abstract class Transaction {
 
 	private final Money amount;
+	private final Instant dateTime;
 
-	private Transaction(Money amount) {
+	private Transaction(Money amount, Instant dateTime) {
 		this.amount = amount;
+		this.dateTime = dateTime;
 	}
 
-	public Money amount() {
-		return amount;
+	Instant getDateTime() {
+		return dateTime;
 	}
 	
-	public abstract Money against(Money money);
+	Money getAmount() {
+		return amount;
+	}
+
+	abstract Money against(Money money);
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Transaction that = (Transaction) o;
+		return Objects.equals(amount, that.amount) && Objects.equals(dateTime, that.dateTime);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(amount, dateTime);
+	}
+
+	@Override
+	public String toString() {
+		return "Transaction{amount=" + amount + ", dateTime=" + dateTime + '}';
+	}
 
 	public static class Deposit extends Transaction {
 
-		private Deposit(Money amount) {
-			super(amount);
+		private Deposit(Money amount, Instant instant) {
+			super(amount, instant);
 		}
 
-		public static Deposit depositOf(Money amount) {
-			return new Deposit(amount);
+		public static Deposit depositOf(Money amount, Instant instant) {
+			return new Deposit(amount, instant);
 		}
 
-		public static Deposit deposit(Money amount) {
-			return depositOf(amount);
+		public static Deposit deposit(Money amount, Instant instant) {
+			return depositOf(amount, instant);
 		}
 
 		@Override
 		public Money against(Money other) {
-			return other.plus(this.amount());
+			return other.plus(this.getAmount());
 		}
 	}
 
 	public static class Withdraw extends Transaction {
 
-		public static Withdraw withdrawalOf(Money amount) {
-			return new Withdraw(amount);
+		private Withdraw(Money amount, Instant instant) {
+			super(amount, instant);
 		}
 
-		public static Withdraw withdraw(Money amount) {
-			return withdrawalOf(amount);
+		public static Withdraw withdrawalOf(Money amount, Instant instant) {
+			return new Withdraw(amount, instant);
 		}
 
-		private Withdraw(Money amount) {
-			super(amount);
+		public static Withdraw withdraw(Money amount, Instant instant) {
+			return withdrawalOf(amount, instant);
 		}
 
 		@Override
 		public Money against(Money other) {
-			return other.minus(this.amount());
+			return other.minus(this.getAmount());
 		}
 	}
 }

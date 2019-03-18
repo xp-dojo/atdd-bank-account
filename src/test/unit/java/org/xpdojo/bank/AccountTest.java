@@ -21,54 +21,62 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.time.Instant;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.xpdojo.bank.Account.accountWithBalance;
 import static org.xpdojo.bank.Account.emptyAccount;
 import static org.xpdojo.bank.Money.ZERO;
 import static org.xpdojo.bank.Money.amountOf;
+import static org.xpdojo.bank.Transaction.Deposit.deposit;
+import static org.xpdojo.bank.Transaction.Withdraw.withdraw;
 
 class AccountTest {
 
+	private static final Clock FIXED_CLOCK = () -> Instant.parse("2019-02-03T10:15:30Z");
+	
 	@Test
 	void newAccountShouldHaveZeroBalance() {
-		Account account = emptyAccount();
+		Account account = emptyAccount(FIXED_CLOCK);
 		assertThat(account.balance(), is(ZERO));
 	}
 
 	@Test
 	void depositToEmptyAccountShouldIncreaseTheBalance() {
-		Account account = emptyAccount();
+		Account account = emptyAccount(FIXED_CLOCK);
 		account.deposit(amountOf(10));
 		assertThat(account.balance(), is(amountOf(10)));
 	}
 
 	@Test
 	void depositToNonEmptyAccountShouldIncreaseTheBalance() {
-		Account account = accountWithBalance(amountOf(10));
+		Account account = accountWithBalance(amountOf(10), FIXED_CLOCK);
 		account.deposit(amountOf(20));
 		assertThat(account.balance(), is(amountOf(30)));
 	}
 
 	@Test
 	void withdrawalShouldDecreaseTheBalance() {
-		Account account = accountWithBalance(amountOf(10));
+		Account account = accountWithBalance(amountOf(10), FIXED_CLOCK);
 		account.withdraw(amountOf(10));
 		assertThat(account.balance(), is(ZERO));
 	}
 
 	@Test
 	void withdrawalShouldNotBeAppliedWhenItTakesAccountOverdrawn() {
-		Account account = emptyAccount();
+		Account account = emptyAccount(FIXED_CLOCK);
 		account.withdraw(amountOf(1));
 		assertThat(account.balance(), is(ZERO));
 	}
 
 	@Test
 	void transferShouldMoveMoneyFromOneAccountToAnother() {
-		Account sender = accountWithBalance(amountOf(10));
-		Account receiver = emptyAccount();
+		Account sender = accountWithBalance(amountOf(10), FIXED_CLOCK);
+		Account receiver = emptyAccount(FIXED_CLOCK);
 
 		sender.transfer(amountOf(10), receiver);
 
@@ -78,8 +86,8 @@ class AccountTest {
 
 	@Test
 	void transferShouldNotBeAppliedWhenItTakesSendingAccountOverdrawn() {
-		Account sender = emptyAccount();
-		Account receiver = emptyAccount();
+		Account sender = emptyAccount(FIXED_CLOCK);
+		Account receiver = emptyAccount(FIXED_CLOCK);
 
 		sender.transfer(amountOf(1), receiver);
 
@@ -90,7 +98,25 @@ class AccountTest {
 	@Test
 	void statementShouldBeWrittenToSuppliedWriter() throws IOException {
 		Statement statement = (account, writer) -> writer.append("STATEMENT GENERATED ").append(account.balance().toString());
-		String actual = accountWithBalance(amountOf(2123)).writeStatement(statement, new StringWriter());
+		String actual = accountWithBalance(amountOf(2123), FIXED_CLOCK).writeStatement(statement, new StringWriter());
 		assertThat(actual, is("STATEMENT GENERATED 2,123.00"));
+	}
+	
+	@Test
+	void emptyAccountIncludesAnInitialDeposit() {
+		Account account = emptyAccount(FIXED_CLOCK);
+		List<Transaction> transactions = account.transactions().collect(Collectors.toList());
+		
+		assertThat(transactions, contains(deposit(ZERO, FIXED_CLOCK.now())));
+	}	
+	
+	@Test
+	void transactionsShouldRecordTimeOfTransaction() {
+		Account account = emptyAccount(FIXED_CLOCK);
+		account.deposit(amountOf(100));
+		account.withdraw(amountOf(60));
+		List<Transaction> transactions = account.transactions().collect(Collectors.toList());
+		
+		assertThat(transactions, contains(deposit(ZERO, FIXED_CLOCK.now()), deposit(amountOf(100), FIXED_CLOCK.now()), withdraw(amountOf(60), FIXED_CLOCK.now())));
 	}
 }
