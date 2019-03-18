@@ -41,23 +41,26 @@
                 <th concordion:set="#amount">Amount</th>
             </tr>
             <tr>
-                <td>13 Feb 2019 10:34</td>
+                <td>2019-02-13T10:34:00.00Z</td>
                 <td>Deposit</td>
                 <td>100</td>
             </tr>
             <tr>
-                <td>15 Feb 2019 08:12</td>
+                <td>2019-02-15T08:12:00.00Z</td>
                 <td>Deposit</td>
                 <td>125</td>
             </tr>
             <tr>
-                <td>16 Feb 2019 23:04</td>
+                <td>2019-02-16T23:04:00.00Z</td>
                 <td>Withdraw</td>
                 <td>35</td>
             </tr>
         </table>
         
-        <p>When a full statement is requested, the statement <span concordion:assert-equals="statementIncludes(#transactions)">includes all transactions</span> and <span>shows the current balance</span> (the sum of all transactions applied to the starting balance).</p>
+        <p>When a full <span concordion:execute="#account = applyTransactionsToAccount(#transactions)">statement is requested</span>, the statement <span concordion:assert-equals="statementIncludes(#transactions, #account)">includes all transactions</span> and <span>shows the current balance</span> (the sum of all transactions applied to the starting balance).</p>
+
+        <pre style="max-width: 50em" class="skeuomorphic" concordion:echo="getActualStatement(#account)"></pre>
+
     </div>
 </div>
 

@@ -24,19 +24,27 @@ import org.junit.runner.RunWith;
 import java.io.IOException;
 import java.util.List;
 
-import static org.xpdojo.bank.Account.emptyAccount;
+import static java.time.Instant.parse;
 
 @RunWith(ConcordionRunner.class)
 @ConcordionResources(value = {"../../../concordion.css"})
 public class ViewStatement {
 
-	private final FullStatementFixture fixture = new FullStatementFixture(emptyAccount());
-	
-	public List<FullStatementFixture.Transaction> addTransaction(String dateTime, String direction, String amount) {
-		return fixture.addTransaction(dateTime, direction, amount);
+	private final FullStatementFixture fixture = new FullStatementFixture();
+
+	public List<FullStatementFixture.Transaction> addTransaction(String isoUtcDateTime, String direction, String amount) {
+		return fixture.addTransaction(parse(isoUtcDateTime), direction, amount);
 	}
 
-	public String statementIncludes(List<FullStatementFixture.Transaction> transactions) throws IOException {
-		return fixture.statementIncludes(transactions);
+	public Account applyTransactionsToAccount(List<FullStatementFixture.Transaction> transactions) {
+		return fixture.applyTransactionsToAccount(transactions);
+	}
+	
+	public String statementIncludes(List<FullStatementFixture.Transaction> transactions, Account account) throws IOException {
+		return fixture.statementIncludes(transactions, account);
+	}
+	
+	public String getActualStatement(Account account) throws IOException {
+		return fixture.getActualStatement(account);
 	}
 }

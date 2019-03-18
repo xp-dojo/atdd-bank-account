@@ -19,56 +19,95 @@ package org.xpdojo.bank;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+import static java.time.LocalDateTime.ofInstant;
+import static java.time.ZoneOffset.UTC;
+import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.stream.Collectors.toList;
+import static org.xpdojo.bank.Account.emptyAccount;
 import static org.xpdojo.bank.Money.amountOf;
 
 public class FullStatementFixture {
 	
-	private final Account account;
 	private final List<Transaction> executed = new ArrayList<>();
 
-	public FullStatementFixture(Account account) {
-		this.account = account;
-	}
-
-	public List<Transaction> addTransaction(String dateTime, String direction, String amount) {
-		executed.add(new Transaction(direction, amount));
-		if (direction.equals("Deposit"))
-			account.deposit(amountOf(Long.parseLong(amount)));
-		else if (direction.equals("Withdraw"))
-			account.withdraw(amountOf(Long.parseLong(amount)));
-		else
-			throw new RuntimeException(direction + " not recognised");
+	public List<Transaction> addTransaction(Instant dateTime, String direction, String amount) {
+		executed.add(new Transaction(dateTime, direction, amount));
 		return executed;
 	}
 
-	public String statementIncludes(List<Transaction> transactions) throws IOException {
+	public Account applyTransactionsToAccount(List<Transaction> transactions) {
+		Account account = emptyAccount(new TickingClock(timesOf(transactions)));
+		
+		transactions.forEach(transaction -> {
+			if (transaction.direction.equals("Deposit"))
+				account.deposit(amountOf(Long.parseLong(transaction.amount)));
+			else if (transaction.direction.equals("Withdraw"))
+				account.withdraw(amountOf(Long.parseLong(transaction.amount)));
+			else
+				throw new RuntimeException(transaction.direction + " not recognised");
+		});
+		return account;
+	}
+
+	public String statementIncludes(List<Transaction> transactions, Account account) throws IOException {
 		String statement = account.writeStatement(new FullStatement(), new StringWriter());
-		List<Boolean> found = transactions.stream().map(transactionFound(statement)).collect(toList());
+		List<Boolean> found = transactions.stream().map(isTransactionFoundIn(statement)).collect(toList());
 
 		if (found.contains(false))
-			return "doesn't include all transactions";
+			return "doesn't include all transaction details";
 		else
 			return "includes all transactions";
 	}
 
-	private Function<Transaction, Boolean> transactionFound(String line) {
-		return transaction -> line.contains(transaction.direction + " " + transaction.amount);
+	public String getActualStatement(Account account) throws IOException {
+		return account.writeStatement(new FullStatement(), new StringWriter());
+	}
+
+	private static List<Instant> timesOf(List<Transaction> transactions) {
+		return transactions.stream().map(transaction -> transaction.dateTime).collect(toList());
+	}
+
+	private static Function<Transaction, Boolean> isTransactionFoundIn(String line) {
+		return transaction -> {
+			String formattedDate = ofPattern("dd/MM/yyyy").format(ofInstant(transaction.dateTime, UTC));
+			String formattedTime = ofPattern("HH:mm").format(ofInstant(transaction.dateTime, UTC));
+			return line.contains(formattedDate + " " + formattedTime + " " + transaction.direction + " " + transaction.amount);
+		};
 	}
 
 	static class Transaction {
 
+		private final Instant dateTime;
 		private final String direction;
 		private final String amount;
 
-		public Transaction(String direction, String amount) {
+		public Transaction(Instant dateTime, String direction, String amount) {
+			this.dateTime = dateTime;
 			this.direction = direction;
 			this.amount = amount;
 		}
 	}
 
+	static class TickingClock implements Clock {
+
+		private final List<Instant> instants;
+		private int index = 0;
+		
+		TickingClock(List<Instant> instants) {
+			this.instants = instants;
+			this.instants.add(0, Instant.now()); // to take care of the initial deposit on account creation
+		}
+
+		@Override
+		public Instant now() {
+			if (index == instants.size())
+				return Instant.now();
+			return instants.get(index++);
+		}
+	}
 }
