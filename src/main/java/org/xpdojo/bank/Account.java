@@ -48,7 +48,7 @@ public class Account {
     }
 
     public Money balance() {
-        return transactions().reduce(ZERO, (money, transaction) -> transaction.against(money), Money::plus);
+        return transactions().reduce(ZERO, (money, transaction) -> transaction.against(money), (a, b) -> a);
     }
 
 	public void deposit(Money amount) {
