@@ -22,14 +22,12 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 
 import static java.time.Instant.ofEpochSecond;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.not;
 import static org.xpdojo.bank.Money.ZERO;
 import static org.xpdojo.bank.Money.amountOf;
@@ -98,36 +96,6 @@ class TransactionTest {
 		assertThat(deposit(amountOf(100), now), is(not(withdraw(amountOf(100), now))));
 		assertThat(deposit(amountOf(100), now), is(deposit(amountOf(100), now)));
 		assertThat(withdraw(amountOf(100), now), is(withdraw(amountOf(100), now)));
-	}
-
-	@Test
-	void runningBalance() {
-		List<Transaction> transactions = asList(
-			deposit(amountOf(10), ofEpochSecond(1)),
-			deposit(amountOf(20), ofEpochSecond(2)),
-			withdraw(amountOf(5), ofEpochSecond(3)),
-			withdraw(amountOf(5), ofEpochSecond(4)),
-			deposit(amountOf(3), ofEpochSecond(5))
-		);
-
-		assertThat(getRunningBalance(transactions), contains(
-			amountOf(10),
-			amountOf(30),
-			amountOf(25),
-			amountOf(20),
-			amountOf(23)
-		));
-	}
-
-	private List<Money> getRunningBalance(List<Transaction> transactions) {
-		return transactions.stream().reduce(new ArrayList<>(), (accumulator, transaction) -> {
-					if (accumulator.isEmpty()) {
-						accumulator.add(transaction.getAmount());
-					} else {
-						accumulator.add(transaction.against(accumulator.get(accumulator.size() - 1)));
-					}
-					return accumulator;
-				}, (a, b) -> a);
 	}
 
 }
