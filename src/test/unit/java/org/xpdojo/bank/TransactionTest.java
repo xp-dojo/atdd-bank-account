@@ -22,12 +22,14 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 import static java.time.Instant.ofEpochSecond;
 import static java.util.Arrays.asList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.contains;
 import static org.hamcrest.Matchers.not;
 import static org.xpdojo.bank.Money.ZERO;
 import static org.xpdojo.bank.Money.amountOf;
@@ -47,11 +49,11 @@ class TransactionTest {
 	void withdrawalShouldSubtractWithdrawalAmount() {
 		assertThat(withdraw(amountOf(10), now).against(amountOf(10)), is(ZERO));
 	}
-	
+
 	@ParameterizedTest(name = "deposit of {0} and {1} should sum to {2}")
 	@CsvSource({
-			"10, 20, 30",
-			"20, 10, 30"
+		"10, 20, 30",
+		"20, 10, 30"
 	})
 	void twoDepositsSumToTotal(long amount1, long amount2, long expectedSum) {
 		assertThat(deposit(amountOf(amount1), now).against(amountOf(amount2)), is(amountOf(expectedSum)));
@@ -69,7 +71,7 @@ class TransactionTest {
 			deposit(amountOf(20), ofEpochSecond(2)),
 			withdraw(amountOf(5), ofEpochSecond(3)),
 			withdraw(amountOf(5), ofEpochSecond(4)),
-			deposit(amountOf(3),  ofEpochSecond(5))
+			deposit(amountOf(3), ofEpochSecond(5))
 		);
 
 		Money total = transactions.stream().reduce(ZERO, (money, transaction) -> transaction.against(money), Money::plus);
@@ -83,13 +85,13 @@ class TransactionTest {
 			deposit(amountOf(20), ofEpochSecond(2)),
 			withdraw(amountOf(5), ofEpochSecond(3)),
 			withdraw(amountOf(5), ofEpochSecond(4)),
-			deposit(amountOf(3),  ofEpochSecond(5))
+			deposit(amountOf(3), ofEpochSecond(5))
 		);
 
 		Money total = transactions.stream().reduce(amountOf(-10), (money, transaction) -> transaction.against(money), Money::plus);
 		assertThat(total, is(amountOf(13)));
 	}
-	
+
 	@Test
 	void basicEqualityChecks() {
 		Instant now = Instant.now();
@@ -97,4 +99,35 @@ class TransactionTest {
 		assertThat(deposit(amountOf(100), now), is(deposit(amountOf(100), now)));
 		assertThat(withdraw(amountOf(100), now), is(withdraw(amountOf(100), now)));
 	}
+
+	@Test
+	void runningBalance() {
+		List<Transaction> transactions = asList(
+			deposit(amountOf(10), ofEpochSecond(1)),
+			deposit(amountOf(20), ofEpochSecond(2)),
+			withdraw(amountOf(5), ofEpochSecond(3)),
+			withdraw(amountOf(5), ofEpochSecond(4)),
+			deposit(amountOf(3), ofEpochSecond(5))
+		);
+
+		assertThat(getRunningBalance(transactions), contains(
+			amountOf(10),
+			amountOf(30),
+			amountOf(25),
+			amountOf(20),
+			amountOf(23)
+		));
+	}
+
+	private List<Money> getRunningBalance(List<Transaction> transactions) {
+		return transactions.stream().reduce(new ArrayList<>(), (accumulator, transaction) -> {
+					if (accumulator.isEmpty()) {
+						accumulator.add(transaction.getAmount());
+					} else {
+						accumulator.add(transaction.against(accumulator.get(accumulator.size() - 1)));
+					}
+					return accumulator;
+				}, (a, b) -> a);
+	}
+
 }

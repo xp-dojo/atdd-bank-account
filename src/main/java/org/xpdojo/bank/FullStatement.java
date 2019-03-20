@@ -20,7 +20,10 @@ package org.xpdojo.bank;
 import java.io.IOException;
 import java.io.Writer;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static java.time.LocalDateTime.ofInstant;
 import static java.time.ZoneOffset.UTC;
@@ -30,23 +33,48 @@ import static java.util.stream.Collectors.joining;
 public class FullStatement implements Statement {
 
 	private static final String NEW_LINE = System.getProperty("line.separator");
-	
+
 	@Override
 	public void write(Account account, Writer writer) throws IOException {
+		List<StatementLine> lines = runningBalance(account.transactions());
 		writer
-			.append(account.transactions().map(toStatementLine()).collect(joining(NEW_LINE)))
-			.append("\nbalance: ")
+			.append(lines.stream().map(toStatement()).collect(joining(NEW_LINE)))
+			.append("\n\nbalance: ")
 			.append(account.balance().toString());
 	}
 
-	private Function<Transaction, String> toStatementLine() {
-		return transaction -> {
-			LocalDateTime dateTime = ofInstant(transaction.getDateTime(), UTC);
+	private List<StatementLine> runningBalance(Stream<Transaction> transactions) {
+		List<StatementLine> accumulator = new ArrayList<>();
+		transactions.forEach(transaction -> {
+			if (accumulator.isEmpty())
+				accumulator.add(new StatementLine(transaction, transaction.getAmount()));
+			else {
+				StatementLine previous = accumulator.get(accumulator.size() - 1);
+				accumulator.add(new StatementLine(transaction, transaction.against(previous.balance)));
+			}
+		});
+		return accumulator;
+	}
+
+	private Function<StatementLine, String> toStatement() {
+		return line -> {
+			LocalDateTime dateTime = ofInstant(line.transaction.getDateTime(), UTC);
 			String date = ofPattern("dd/MM/yyyy").format(dateTime);
 			String time = ofPattern("HH:mm").format(dateTime);
-			String direction = transaction.getClass().getSimpleName();
-			String amount = transaction.getAmount().toString();
-			return date + " " + time + " " + direction + " " + amount;
+			String direction = line.transaction.getClass().getSimpleName();
+			String amount = line.transaction.getAmount().toString();
+			String balance = line.balance.toString();
+			return date + " " + time + " " + direction + " " + amount + " " + balance;
 		};
+	}
+
+	private class StatementLine {
+		private final Transaction transaction;
+		private final Money balance;
+
+		public StatementLine(Transaction transaction, Money balance) {
+			this.transaction = transaction;
+			this.balance = balance;
+		}
 	}
 }
