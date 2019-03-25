@@ -46,7 +46,11 @@ public class Account {
     }
 
     public Money balance() {
-        return transactions().reduce(ZERO, (money, transaction) -> transaction.against(money), (a, b) -> a);
+        Money total = ZERO;
+        for (Transaction transaction : transactions) {
+            total = transaction.against(total);
+        }
+        return total;
     }
 
 	public void deposit(Money amount) {
