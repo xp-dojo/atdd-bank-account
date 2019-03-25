@@ -23,7 +23,7 @@ import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
 
 @RunWith(ConcordionRunner.class)
-@ConcordionResources(value = {"../../../concordion.css"})
+@ConcordionResources(value = { "/concordion.css" })
 @Unimplemented
 public class ViewFullStatement {
 }

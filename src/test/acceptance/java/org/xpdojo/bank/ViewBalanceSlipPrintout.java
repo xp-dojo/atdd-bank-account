@@ -29,7 +29,7 @@ import static org.xpdojo.bank.Money.ZERO;
 import static org.xpdojo.bank.Money.amountOf;
 
 @RunWith(ConcordionRunner.class)
-@ConcordionResources(value = {"../../../concordion.css"})
+@ConcordionResources(value = { "/concordion.css" })
 public class ViewBalanceSlipPrintout {
 	
 	private Account account = accountWithBalance(ZERO, Instant::now);
