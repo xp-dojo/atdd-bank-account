@@ -16,7 +16,7 @@
   ~ limitations under the License.
   -->
 
-<html>
+<html xmlns:concordion="http://www.concordion.org/2007/concordion">
 <head>
     <title>Bank Statements</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -32,55 +32,55 @@
     <div>
         <p>The following transactions have taken place against an account (with a starting balance of zero).</p>
 
-        <table>
+        <table concordion:execute="#transactions = addTransaction(#dateTime, #direction, #amount)">
             <tr>
-                <th>Date / Time</th>
-                <th>Type</th>
-                <th>Amount</th>
+                <th concordion:set="#dateTime">Date / Time</th>
+                <th concordion:set="#direction">Type</th>
+                <th concordion:set="#amount">Amount</th>
             </tr>
             <tr>
-                <td>13 Feb 2019 10:34</td>
-                <td>CREDIT</td>
+                <td>2019-02-13T10:34:00.00Z</td>
+                <td>Deposit</td>
                 <td>100</td>
             </tr>
             <tr>
-                <td>15 Feb 2019 08:12</td>
-                <td>CREDIT</td>
+                <td>2019-02-15T08:12:00.00Z</td>
+                <td>Deposit</td>
                 <td>125</td>
             </tr>
             <tr>
-                <td>16 Feb 2019 23:04</td>
-                <td>WITHDRAW</td>
+                <td>2019-02-16T23:04:00.00Z</td>
+                <td>Withdraw</td>
                 <td>35</td>
             </tr>
         </table>
         
-        <p>When a full statement is requested, a running balance should be shown against each line of the statement (the starting balance should be <span>zero</span>):</p>
+        <p>When a full <span concordion:execute="#account = applyTransactionsToAccount(#transactions)">statement is requested</span>, a running balance should be shown against each line of the statement (the starting balance should be <span>zero</span>):</p>
 
-        <table>
+        <table concordion:execute="#balance = getBalanceFor(#account, #dateTime)">
             <tr>
-                <th>Date / Time</th>
+                <th concordion:set="#dateTime">Date / Time</th>
                 <th>Type</th>
                 <th>Amount</th>
-                <th>Balance</th>
+                <th concordion:assert-equals="#balance">Balance</th>
             </tr>
             <tr>
-                <td>13 Feb 2019 10:34</td>
-                <td>CREDIT</td>
+                <td>2019-02-13T10:34:00.00Z</td>
+                <td>Deposit</td>
                 <td>100</td>
-                <td class="success">100</td>
+                <td>100.00</td>
             </tr>
             <tr>
-                <td>15 Feb 2019 08:12</td>
-                <td>CREDIT</td>
+                <td>2019-02-15T08:12:00.00Z</td>
+                <td>Deposit</td>
                 <td>125</td>
-                <td class="success">225</td>
+                <td>225.00</td>
             </tr>
             <tr>
-                <td>16 Feb 2019 23:04</td>
-                <td>WITHDRAW</td>
+                <td>2019-02-16T23:04:00.00Z</td>
+                <td>Withdraw</td>
                 <td>35</td>
-                <td class="success">190</td>
+                <td>190.00</td>
             </tr>
         </table>
     </div>

@@ -23,6 +23,7 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 import static java.time.LocalDateTime.ofInstant;
 import static java.time.ZoneOffset.UTC;
@@ -81,10 +82,28 @@ public class FullStatementFixture {
 
 	private static Function<Transaction, Boolean> isTransactionFoundIn(String line) {
 		return transaction -> {
-			String formattedDate = ofPattern("dd/MM/yyyy").format(ofInstant(transaction.dateTime, UTC));
-			String formattedTime = ofPattern("HH:mm").format(ofInstant(transaction.dateTime, UTC));
+			String formattedDate = formattedInstant("dd/MM/yyyy", transaction.dateTime);
+			String formattedTime = formattedInstant("HH:mm", transaction.dateTime);
 			return line.contains(formattedDate + " " + formattedTime + " " + transaction.direction + " " + transaction.amount);
 		};
+	}
+
+	public String getBalanceFor(Account account, Instant dateTime) throws IOException {
+		String statement = getActualStatement(account);
+		String line = getTransactionLine(dateTime, statement);
+		return Stream.of(line.split(" ")).reduce((a, b) -> b).get();
+	}
+
+	private String getTransactionLine(Instant dateTime, String statement) {
+		String formattedDateTime = formattedInstant("dd/MM/yyyy HH:mm", dateTime);
+		int found = statement.indexOf(formattedDateTime);
+		if (found == 1)
+			throw new RuntimeException("could not find a statement line with " + formattedDateTime);
+		return statement.substring(found, statement.indexOf(System.getProperty("line.separator"), found));
+	}
+
+	private static String formattedInstant(String pattern, Instant dateTime) {
+		return ofPattern(pattern).format(ofInstant(dateTime, UTC));
 	}
 
 	static class Transaction {

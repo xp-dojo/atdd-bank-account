@@ -14,8 +14,15 @@ There are [slides](slides.pptx) to talk along with. This is really about introdu
 
 During the practical element of the session make sure you have enough helpers to act as "customers", fielding questions and clarifying the [previous transcript](TRANSCRIPT.md). If you can, make sure the customer gives differing advice to the group. For example, either don't explain what address should be shown on the statement or claim it should be the customers and the branches (to differing people).
 
+As an alternative, it seems to work well doing a group exercise. This can be in the form of getting the audience to shout of what they think are the requirements and listing them on a flip chart. When they're all collected, point out that these are all assumptions. Ask how we could validate these assumptions?
+
 
 ## Wrap-up
+
+### Instructor Branch
+
+The instructor branch https://github.com/xp-dojo/atdd-bank-account/tree/instructors contains a reference implementation which you can demo as and when.
+
 
 ### Show Iterative Examples
 

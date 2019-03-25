@@ -40,16 +40,14 @@ class FullStatementTest {
 		account.deposit(amountOf(20));
 		account.withdraw(amountOf(15));
 
-		FullStatement statement = new FullStatement();
-		Writer writer = new StringWriter();
-		statement.write(account, writer);
+		String statement = generateStatement(account);
 
 		String expected =
-			"23/02/2019 10:15 Deposit .00"   + NEW_LINE +
-			"23/02/2019 11:15 Deposit 10.00" + NEW_LINE +
-			"23/02/2019 12:15 Deposit 20.00" + NEW_LINE +
-			"23/02/2019 13:15 Withdraw 15.00";
-		assertThat(writer.toString(), containsString(expected));
+			"23/02/2019 10:15 Deposit .00 .00"   + NEW_LINE +
+			"23/02/2019 11:15 Deposit 10.00 10.00" + NEW_LINE +
+			"23/02/2019 12:15 Deposit 20.00 30.00" + NEW_LINE +
+			"23/02/2019 13:15 Withdraw 15.00 15.00";
+		assertThat(statement, containsString(expected));
 	}
 	
 	@Test
@@ -59,13 +57,31 @@ class FullStatementTest {
 		account.deposit(amountOf(20));
 		account.withdraw(amountOf(14));
 
+		String statement = generateStatement(account);
+		assertThat(statement, containsString("balance: " + amountOf(16).toString()));
+	}
+	
+	@Test
+	void aFullStatementIncludesARunningBalance() throws IOException {
+		Account account = emptyAccount(new IncrementingClock(Instant.parse("2019-02-23T10:15:00Z")));
+		account.deposit(amountOf(10));
+		account.deposit(amountOf(20));
+		account.withdraw(amountOf(14));
+
+		String statement = generateStatement(account);
+		
+		assertThat(statement, containsString(amountOf(10).toString()));
+		assertThat(statement, containsString(amountOf(30).toString()));
+		assertThat(statement, containsString(amountOf(16).toString()));
+	}
+
+	private String generateStatement(Account account) throws IOException {
 		FullStatement statement = new FullStatement();
 		Writer writer = new StringWriter();
 		statement.write(account, writer);
-
-		assertThat(writer.toString(), containsString("balance: " + amountOf(16).toString()));
+		return writer.toString();
 	}
-	
+
 	static class IncrementingClock implements Clock {
 
 		private final Instant initial;

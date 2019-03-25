@@ -27,7 +27,7 @@ import java.util.List;
 import static java.time.Instant.parse;
 
 @RunWith(ConcordionRunner.class)
-@ConcordionResources(value = {"../../../concordion.css"})
+@ConcordionResources(value = { "/concordion.css" })
 public class ViewStatement {
 
 	private final FullStatementFixture fixture = new FullStatementFixture();
