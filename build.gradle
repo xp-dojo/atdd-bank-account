@@ -10,12 +10,12 @@ repositories {
 
 sourceSets {
     test {
-        java.srcDir file('src/test/unit/java')
-        resources.srcDir file('src/test/unit/resources')
+        java.srcDirs = ['src/test/unit/java']
+        resources.srcDirs = ['src/test/unit/resources']
     }
     acceptanceTest {
-        java.srcDir file('src/test/acceptance/java')
-        resources.srcDir file('src/test/acceptance/resources')
+        java.srcDirs = ['src/test/acceptance/java']
+        resources.srcDirs = ['src/test/acceptance/resources']
         compileClasspath += main.output + test.output
         runtimeClasspath += main.output + test.output
     }
