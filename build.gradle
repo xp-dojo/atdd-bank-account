@@ -1,3 +1,5 @@
+defaultTasks 'clean', 'build'
+
 apply plugin: 'java'
 
 wrapper {
@@ -33,10 +35,7 @@ dependencies {
 }
 
 test {
-    systemProperties['concordion.output.dir'] = "$reporting.baseDir/spec"
-    testLogging.showStandardStreams = true
     outputs.upToDateWhen { false }
-    useJUnitPlatform()
 }
 
 task acceptanceTest(type: Test) {
@@ -45,6 +44,8 @@ task acceptanceTest(type: Test) {
     testClassesDirs = sourceSets.acceptanceTest.output.classesDirs
     classpath = sourceSets.acceptanceTest.runtimeClasspath
     outputs.upToDateWhen { false }
+    systemProperties['concordion.output.dir'] = "$reporting.baseDir/spec"
+    testLogging.showStandardStreams = true
 }
 
 check.dependsOn acceptanceTest
