@@ -18,37 +18,13 @@
 package org.xpdojo.bank;
 
 import org.concordion.api.ConcordionResources;
+import org.concordion.api.Unimplemented;
 import org.concordion.integration.junit4.ConcordionRunner;
 import org.junit.runner.RunWith;
 
-import java.io.IOException;
-import java.util.List;
-
-import static java.time.Instant.parse;
-
 @RunWith(ConcordionRunner.class)
 @ConcordionResources(value = { "/concordion.css" })
+@Unimplemented
 public class ViewStatement {
 
-	private final FullStatementFixture fixture = new FullStatementFixture();
-
-	public List<FullStatementFixture.Transaction> addTransaction(String isoUtcDateTime, String direction, String amount) {
-		return fixture.addTransaction(parse(isoUtcDateTime), direction, amount);
-	}
-
-	public Account applyTransactionsToAccount(List<FullStatementFixture.Transaction> transactions) {
-		return fixture.applyTransactionsToAccount(transactions);
-	}
-	
-	public String statementIncludes(List<FullStatementFixture.Transaction> transactions, Account account) throws IOException {
-		return fixture.statementIncludes(transactions, account);
-	}
-
-	public String includesBalance(Account account) throws IOException {
-		return fixture.statementIncludesBalance(account);
-	}
-
-	public String getActualStatement(Account account) throws IOException {
-		return fixture.getActualStatement(account);
-	}
 }

@@ -15,7 +15,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<html xmlns:concordion="http://www.concordion.org/2007/concordion">
+<html>
 <head>
     <title>Bank Statements</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
@@ -26,43 +26,7 @@
 
 <h1>Bank Statements</h1>
 
-<p>A <a href="ViewBalanceSlip.html">balance slip</a> shows just the current balance but our customer's would like to see the transactions that have taken place against their account.</p>
-
-<div class="example">
-
-    <h3>Example</h3>
-    <div>
-        <p concordion:="">The following transactions have taken place against an account (with a starting balance of zero).</p>
-
-        <table concordion:execute="#transactions = addTransaction(#dateTime, #direction, #amount)">
-            <tr>
-                <th concordion:set="#dateTime">Date / Time</th>
-                <th concordion:set="#direction">Type</th>
-                <th concordion:set="#amount">Amount</th>
-            </tr>
-            <tr>
-                <td>2019-02-13T10:34:00.00Z</td>
-                <td>Deposit</td>
-                <td>100</td>
-            </tr>
-            <tr>
-                <td>2019-02-15T08:12:00.00Z</td>
-                <td>Deposit</td>
-                <td>125</td>
-            </tr>
-            <tr>
-                <td>2019-02-16T23:04:00.00Z</td>
-                <td>Withdraw</td>
-                <td>35</td>
-            </tr>
-        </table>
-        
-        <p>When a full <span concordion:execute="#account = applyTransactionsToAccount(#transactions)">statement is requested</span>, the statement <span concordion:assert-equals="statementIncludes(#transactions, #account)">includes all transactions</span> and <span concordion:assert-equals="includesBalance(#account)">shows the current balance</span> (the sum of all transactions applied to the starting balance).</p>
-
-        <pre style="max-width: 50em" class="skeuomorphic" concordion:echo="getActualStatement(#account)"></pre>
-
-    </div>
-</div>
+<!-- Add your "specification" here -->
 
 <div class="information">
     <h3>Further information</h3>
