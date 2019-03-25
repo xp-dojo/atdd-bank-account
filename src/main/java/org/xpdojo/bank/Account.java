@@ -32,18 +32,16 @@ import static org.xpdojo.bank.Transaction.Withdraw.withdrawalOf;
 public class Account {
 
     private final List<Transaction> transactions = new ArrayList<>();
-    private final Clock clock;
 
-    public static Account accountWithBalance(Money balance, Clock clock) {
-        return new Account(balance, clock);
+    public static Account accountWithBalance(Money balance) {
+        return new Account(balance);
     }
 
-    public static Account emptyAccount(Clock clock) {
-        return accountWithBalance(ZERO, clock);
+    public static Account emptyAccount() {
+        return accountWithBalance(ZERO);
     }
 
-    private Account(Money balance, Clock clock) {
-        this.clock = clock;
+    private Account(Money balance) {
         deposit(balance);
     }
 
@@ -52,14 +50,14 @@ public class Account {
     }
 
 	public void deposit(Money amount) {
-        transactions.add(depositOf(amount, clock.now()));
+        transactions.add(depositOf(amount));
     }
 
     public Result withdraw(Money amount) {
         if (balance().isLessThan(amount))
             return failure();
 
-        transactions.add(withdrawalOf(amount, clock.now()));
+        transactions.add(withdrawalOf(amount));
         return success();
     }
 

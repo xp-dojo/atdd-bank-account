@@ -22,7 +22,6 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.io.Writer;
-import java.time.Instant;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
@@ -35,7 +34,7 @@ class FullStatementTest {
 	
 	@Test
 	void aFullStatementShouldIncludeAllTransactionsInOrderWithEachOnItsOwnRow() throws IOException {
-		Account account = emptyAccount(new IncrementingClock(Instant.parse("2019-02-23T10:15:00Z")));
+		Account account = emptyAccount();
 		account.deposit(amountOf(10));
 		account.deposit(amountOf(20));
 		account.withdraw(amountOf(15));
@@ -43,16 +42,16 @@ class FullStatementTest {
 		String statement = generateStatement(account);
 
 		String expected =
-			"23/02/2019 10:15 Deposit .00 .00"   + NEW_LINE +
-			"23/02/2019 11:15 Deposit 10.00 10.00" + NEW_LINE +
-			"23/02/2019 12:15 Deposit 20.00 30.00" + NEW_LINE +
-			"23/02/2019 13:15 Withdraw 15.00 15.00";
+			"Deposit .00 .00"   + NEW_LINE +
+			"Deposit 10.00 10.00" + NEW_LINE +
+			"Deposit 20.00 30.00" + NEW_LINE +
+			"Withdraw 15.00 15.00";
 		assertThat(statement, containsString(expected));
 	}
 	
 	@Test
 	void aFullStatementShouldIncludeTheBalance() throws IOException {
-		Account account = emptyAccount(new IncrementingClock(Instant.parse("2019-02-23T10:15:00Z")));
+		Account account = emptyAccount();
 		account.deposit(amountOf(10));
 		account.deposit(amountOf(20));
 		account.withdraw(amountOf(14));
@@ -63,7 +62,7 @@ class FullStatementTest {
 	
 	@Test
 	void aFullStatementIncludesARunningBalance() throws IOException {
-		Account account = emptyAccount(new IncrementingClock(Instant.parse("2019-02-23T10:15:00Z")));
+		Account account = emptyAccount();
 		account.deposit(amountOf(10));
 		account.deposit(amountOf(20));
 		account.withdraw(amountOf(14));
@@ -80,24 +79,5 @@ class FullStatementTest {
 		Writer writer = new StringWriter();
 		statement.write(account, writer);
 		return writer.toString();
-	}
-
-	static class IncrementingClock implements Clock {
-
-		private final Instant initial;
-		private final int anHourInSeconds = 3600;
-		
-		private long increment = 0;
-
-		IncrementingClock(Instant initial) {
-			this.initial = initial;
-		}
-
-		@Override
-		public Instant now() {
-			Instant now = Instant.ofEpochSecond(initial.getEpochSecond() + increment);
-			increment += anHourInSeconds;
-			return now;
-		}
 	}
 }

@@ -19,15 +19,11 @@ package org.xpdojo.bank;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
-import static java.time.LocalDateTime.ofInstant;
-import static java.time.ZoneOffset.UTC;
-import static java.time.format.DateTimeFormatter.ofPattern;
 import static java.util.stream.Collectors.joining;
 
 public class FullStatement implements Statement {
@@ -58,13 +54,10 @@ public class FullStatement implements Statement {
 
 	private Function<StatementLine, String> toStatement() {
 		return line -> {
-			LocalDateTime dateTime = ofInstant(line.transaction.getDateTime(), UTC);
-			String date = ofPattern("dd/MM/yyyy").format(dateTime);
-			String time = ofPattern("HH:mm").format(dateTime);
 			String direction = line.transaction.getClass().getSimpleName();
 			String amount = line.transaction.getAmount().toString();
 			String balance = line.balance.toString();
-			return date + " " + time + " " + direction + " " + amount + " " + balance;
+			return direction + " " + amount + " " + balance;
 		};
 	}
 

@@ -17,23 +17,16 @@
 
 package org.xpdojo.bank;
 
-import java.time.Instant;
 import java.util.Objects;
 
 public abstract class Transaction {
 
 	private final Money amount;
-	private final Instant dateTime;
 
-	private Transaction(Money amount, Instant dateTime) {
+	private Transaction(Money amount) {
 		this.amount = amount;
-		this.dateTime = dateTime;
 	}
 
-	Instant getDateTime() {
-		return dateTime;
-	}
-	
 	Money getAmount() {
 		return amount;
 	}
@@ -45,31 +38,26 @@ public abstract class Transaction {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
 		Transaction that = (Transaction) o;
-		return Objects.equals(amount, that.amount) && Objects.equals(dateTime, that.dateTime);
+		return Objects.equals(amount, that.amount);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(amount, dateTime);
-	}
-
-	@Override
-	public String toString() {
-		return "Transaction{amount=" + amount + ", dateTime=" + dateTime + '}';
+		return Objects.hash(amount);
 	}
 
 	public static class Deposit extends Transaction {
 
-		private Deposit(Money amount, Instant instant) {
-			super(amount, instant);
+		private Deposit(Money amount) {
+			super(amount);
 		}
 
-		public static Deposit depositOf(Money amount, Instant instant) {
-			return new Deposit(amount, instant);
+		public static Deposit depositOf(Money amount) {
+			return new Deposit(amount);
 		}
 
-		public static Deposit deposit(Money amount, Instant instant) {
-			return depositOf(amount, instant);
+		public static Deposit deposit(Money amount) {
+			return depositOf(amount);
 		}
 
 		@Override
@@ -80,16 +68,16 @@ public abstract class Transaction {
 
 	public static class Withdraw extends Transaction {
 
-		private Withdraw(Money amount, Instant instant) {
-			super(amount, instant);
+		private Withdraw(Money amount) {
+			super(amount);
 		}
 
-		public static Withdraw withdrawalOf(Money amount, Instant instant) {
-			return new Withdraw(amount, instant);
+		public static Withdraw withdrawalOf(Money amount) {
+			return new Withdraw(amount);
 		}
 
-		public static Withdraw withdraw(Money amount, Instant instant) {
-			return withdrawalOf(amount, instant);
+		public static Withdraw withdraw(Money amount) {
+			return withdrawalOf(amount);
 		}
 
 		@Override
