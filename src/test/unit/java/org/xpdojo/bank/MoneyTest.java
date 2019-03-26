@@ -21,11 +21,21 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.xpdojo.bank.Money.amountOf;
 
 class MoneyTest {
+
+	@Test
+	void twoMoniesOfTheSameAmountShouldBeEqual() {
+		assertThat(amountOf(10), is(equalTo(amountOf(10))));
+	}
+
+	@Test
+	void twoMoniesOfDifferentAmountsShouldNotBeEqual() {
+		assertThat(amountOf(5), is(not(equalTo(amountOf(10)))));
+	}
 
 	@Test
 	void addingAnAmountShouldGiveTheSumOfTheTwoAmounts() {
