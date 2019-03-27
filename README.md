@@ -49,7 +49,7 @@ This session is all about working with your customers (in this case the product 
 
 ## Specifications and Fixtures
 
-The majority of tooling helps abstract the customer authored acceptance criteria or _specifications_ from the test fixture code that proves them. By keeping these two ideas separate, your test code will continue to work as the underlying system grows. Without the seperation of concerns, your specifications become brittle and require more maintenance as you refine your understanding.
+The majority of tooling helps abstract the customer authored acceptance criteria or _specifications_ from the test fixture code that proves them. By keeping these two ideas separate, your test code will continue to work as the underlying system grows. Without the separation of concerns, your specifications become brittle and require more maintenance as you refine your understanding.
 
 The [Concordion](https://concordion.org/tutorial/java/html/) tool describes the idea graphically like this.
 
