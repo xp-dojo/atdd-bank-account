@@ -35,6 +35,8 @@ dependencies {
 }
 
 test {
+    systemProperty "user.country", "EN"
+    systemProperty "user.language", "en"
     outputs.upToDateWhen { false }
     useJUnitPlatform()
 }
