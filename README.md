@@ -30,6 +30,18 @@ This session is all about working with your customers (in this case the product 
 
 > **Iterative vs incremental development**: do you know the difference? Ask an instructor if you're not sure.
 
+1. Read this document fully and then the customer interview [transcript](TRANSCRIPT.md).
+
+1. Brainstorm your list of requirements.
+
+1. Write your first set of acceptance criteria around the requirements for a statement. Do this in the form of a HTML "specification". Find inspiration in the `ViewBalanceSlip.html` example. Run the test and see it fail.
+
+1. Drop into the TDD cycle (red, green, refactor) to implement the requirement.
+
+1. Finish by running your acceptance test and see it pass.
+
+1. Expand your suite of acceptance tests and repeat the cycle above. 
+
 
 ## Structure
 
