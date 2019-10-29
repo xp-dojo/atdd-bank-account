@@ -1,3 +1,5 @@
+[![](https://travis-ci.org/xp-dojo/atdd-bank-account.svg?branch=instructors)](https://travis-ci.org/xp-dojo/atdd-bank-account)
+
 # Acceptance Testing a Bank Account
 
 You are part of the development team responsible for building out a new online retail bank offering. In a [previous session](https://github.com/xp-dojo/tdd-bank-account-java), you built out basic account functions like depositing and withdrawing funds. Now, the product owner wants to build out the next phase making the offering more appealing to those customers just waiting to sign up.
