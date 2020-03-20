@@ -30,6 +30,18 @@ You will need Java and an IDE.
 
 This session is all about working with your customers (in this case the product owner) to understand their requirements and writing acceptance tests that you can show them to make sure you've understood them correctly and they're happy with what you're building. Just like the TDD session, you should write your acceptance tests *before* the implementation and think about small, iterative development cycles.
 
+1. Read this document fully and then the customer interview [transcript](TRANSCRIPT.md).
+
+1. Brainstorm your list of requirements.
+
+1. Write your first set of acceptance criteria around the requirements for a statement. Do this in the form of a HTML "specification". Find inspiration in the `ViewBalanceSlip.html` example. Run the test and see it fail.
+
+1. Drop into the TDD cycle (red, green, refactor) to implement the requirement.
+
+1. Finish by running your acceptance test and see it pass.
+
+1. Expand your suite of acceptance tests and repeat the cycle above. 
+
 > **Iterative vs incremental development**: do you know the difference? Ask an instructor if you're not sure.
 
 
