@@ -34,7 +34,7 @@ This session is all about working with your customers (in this case the product 
 
 1. Brainstorm your list of requirements.
 
-1. Write your first set of acceptance criteria around the requirements for a statement. Do this in the form of a HTML "specification" in `ViewStatement.java`. Find inspiration in the `ViewBalanceSlip.html` example. Run the test and see it fail.
+1. Write your first set of acceptance criteria around the requirements for a statement. Do this in the form of a HTML "specification" in `ViewStatement.html`. Find inspiration in the `ViewBalanceSlip.html` example. Run the test and see it fail.
 
 1. Drop into the TDD cycle (red, green, refactor) to implement the requirement.
 
