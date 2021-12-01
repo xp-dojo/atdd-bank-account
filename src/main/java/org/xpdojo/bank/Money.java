@@ -18,6 +18,8 @@
 package org.xpdojo.bank;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 import java.util.Objects;
 
 /**
@@ -52,7 +54,9 @@ public class Money {
     
     @Override
     public String toString() {
-        return new DecimalFormat("#,###.00").format(amount);
+        DecimalFormat df = new DecimalFormat("#,###.00");
+        df.setDecimalFormatSymbols(new DecimalFormatSymbols(Locale.UK));
+        return df.format(amount);
     }
 
     @Override
